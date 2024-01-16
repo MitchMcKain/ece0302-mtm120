@@ -10,7 +10,7 @@ public:
   // Default Constructor
   Bitset();
 
-  // TODO COMMENT
+  // Alternate Constructor
   Bitset(intmax_t size);
 
   // TODO COMMENT
@@ -45,7 +45,7 @@ public:
 
 private:
 
-  bool byte[8]; //array of 8 bits
+  bool byte[8]; //array of bits, why cant i have this array undefined size
   bool validity; //determines if object is valid or invalid
 };
 
