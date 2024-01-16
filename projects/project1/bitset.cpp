@@ -3,7 +3,10 @@
 Bitset::Bitset() 
 {
     for (int i = 0; i < 8; i++)
-    {byte[i] = 0;}
+    {
+        byte[i] = 0;
+        validity = true;
+    }
 }
 
 Bitset::Bitset(intmax_t size) {
