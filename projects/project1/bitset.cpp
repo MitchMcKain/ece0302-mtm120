@@ -1,7 +1,9 @@
 #include "bitset.hpp"
 
-Bitset::Bitset() {
-    // TODO
+Bitset::Bitset() 
+{
+    for (int i = 0; i < 8; i++)
+    {byte[i] = 0;}
 }
 
 Bitset::Bitset(intmax_t size) {

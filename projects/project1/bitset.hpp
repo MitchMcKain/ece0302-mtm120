@@ -7,7 +7,7 @@
 class Bitset{
 public:
 
-  // TODO COMMENT
+  // Default Constructor
   Bitset();
 
   // TODO COMMENT
@@ -45,7 +45,8 @@ public:
 
 private:
 
-  // TODO
+  bool byte[8]; //array of 8 bits
+  bool validity; //determines if object is valid or invalid
 };
 
 #endif
