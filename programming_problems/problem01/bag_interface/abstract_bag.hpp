@@ -22,7 +22,7 @@ class AbstractBag
 
         /** Gets the number of items in the bag at this time
          * @pre bag must exist
-         * @return the number of items in the bag */
+         * @return number of items in the bag */
         virtual std::size_t getCurrentSize() const = 0;
 
         /** Determines if the bag is empty or not
