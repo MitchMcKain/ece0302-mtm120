@@ -5,7 +5,7 @@
 
 template<typename T>
 
-class Bag: public AbstractBag
+class Bag : public AbstractBag<T>
 {
 public:
 

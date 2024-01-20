@@ -15,10 +15,10 @@ class AbstractBag
 {
     public:
         /** Default Contructor */
-        Bag();
+        AbstractBag();
 
         /** Destructor */
-        ~Bag();
+        ~AbstractBag();
 
         /** Gets the number of items in the bag at this time
          * @pre bag must exist
