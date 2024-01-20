@@ -23,7 +23,7 @@ class AbstractBag
         /** Gets the number of items in the bag at this time
          * @pre bag must exist
          * @return the number of items in the bag */
-        virtual size_t getCurrentSize() const = 0;
+        virtual std::size_t getCurrentSize() const = 0;
 
         /** Determines if the bag is empty or not
          * @pre bag must exist
@@ -53,13 +53,13 @@ class AbstractBag
          * @pre bag must exist
          * @param entry is for the item to be looking for in the bag
          * @return the number of times entry exists in the bag */
-        virtual size_t getFrequencyOf(const T& entry) const = 0;
+        virtual std::size_t getFrequencyOf(const T& entry) const = 0;
 
         /** Determines if the bag contains a specified item
          * @pre bag must exist
          * @param entry if the item to be looking for in the bag
-         * @return true if that item exists in the bag, or false if the item doesnt exist in the bag
-        */
+         * @return true if that item exists in the bag, or false if the item doesnt exist in the bag */
+        virtual bool contains(const T& entry) const = 0;
 };
 
 
