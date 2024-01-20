@@ -4,15 +4,15 @@
 
 // implementation using fixed automatic storage
 
-template <typename T> AbstractBag<T>::Bag(): size(0) {}
+template <typename T> Bag<T>::Bag(): size(0) {}
 
-template <typename T> AbstractBag<T>::~Bag() {}
+template <typename T> Bag<T>::~Bag() {}
 
-template <typename T> std::size_t AbstractBag<T>::getCurrentSize() const { return size; }
+template <typename T> std::size_t Bag<T>::getCurrentSize() const { return size; }
 
-template <typename T> bool AbstractBag<T>::isEmpty() const { return (size == 0); }
+template <typename T> bool Bag<T>::isEmpty() const { return (size == 0); }
 
-template <typename T> bool AbstractBag<T>::add(const T& entry) {
+template <typename T> bool Bag<T>::add(const T& entry) {
 
   if(size >= MAXSIZE){
     return false;
@@ -24,7 +24,7 @@ template <typename T> bool AbstractBag<T>::add(const T& entry) {
   return true;
 }
 
-template <typename T> bool AbstractBag<T>::remove(const T& entry) {
+template <typename T> bool Bag<T>::remove(const T& entry) {
 
   if(size == 0) return false;
 
@@ -45,9 +45,9 @@ template <typename T> bool AbstractBag<T>::remove(const T& entry) {
 }
 
 
-template <typename T> void AbstractBag<T>::clear() { size = 0; }
+template <typename T> void Bag<T>::clear() { size = 0; }
 
-template <typename T> std::size_t AbstractBag<T>::getFrequencyOf(const T& entry) const {
+template <typename T> std::size_t Bag<T>::getFrequencyOf(const T& entry) const {
 
   std::size_t freq = 0;
 
@@ -58,7 +58,7 @@ template <typename T> std::size_t AbstractBag<T>::getFrequencyOf(const T& entry)
   return freq;
 }
 
-template <typename T> bool AbstractBag<T>::contains(const T& entry) const {
+template <typename T> bool Bag<T>::contains(const T& entry) const {
 
   return (getFrequencyOf(entry) != 0);
 }
