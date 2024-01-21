@@ -61,6 +61,4 @@ class AbstractBag
          * @return true if that item exists in the bag, or false if the item doesnt exist in the bag */
         virtual bool contains(const T& entry) const = 0;
 };
-
-
 #endif
