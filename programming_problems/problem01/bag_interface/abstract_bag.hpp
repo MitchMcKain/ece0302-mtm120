@@ -14,12 +14,6 @@ template<typename T>
 class AbstractBag
 {
     public:
-        /** Default Contructor */
-        AbstractBag();
-
-        /** Destructor */
-        ~AbstractBag();
-
         /** Gets the number of items in the bag at this time
          * @pre bag must exist
          * @return number of items in the bag */
