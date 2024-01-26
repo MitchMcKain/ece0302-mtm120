@@ -45,7 +45,7 @@ public:
 
 private:
 
-  bool byte[8]; //array of bits, why cant i have this array undefined size
+  bool bits[8]; //array of bits, why cant i have this array undefined size
   bool validity; //determines if object is valid or invalid
 };
 

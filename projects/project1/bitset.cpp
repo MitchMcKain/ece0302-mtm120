@@ -4,7 +4,7 @@ Bitset::Bitset()
 {
     for (int i = 0; i < 8; i++)
     {
-        byte[i] = 0;
+        bits[i] = 0;
     }
     validity = true;
 }
@@ -18,7 +18,7 @@ Bitset::Bitset(intmax_t size)
     
     for (int i = 0; i < size; i++)
     {
-        byte[i] = 0;
+        bits[i] = 0;
     }
 }
 
@@ -32,4 +32,35 @@ Bitset::~Bitset()
     // TODO
 }
 
-// TODO: other methods
+intmax_t Bitset::size() const
+{ return 0; }
+
+bool Bitset::good() const
+{
+    return 0;
+}
+
+void Bitset::set(intmax_t index)
+{
+
+}
+
+void Bitset::reset(intmax_t index)
+{
+
+}
+
+void Bitset::toggle(intmax_t index)
+{
+
+}
+
+bool Bitset::test(intmax_t index)
+{
+    return 0;
+}
+
+  std::string Bitset::asString() const
+  {
+    return "";
+  }
