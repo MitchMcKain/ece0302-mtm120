@@ -45,8 +45,9 @@ public:
 
 private:
 
-  bool bits[8]; //array of bits, why cant i have this array undefined size
-  bool validity; //determines if object is valid or invalid
+  uint8_t *bits; //array of bits
+  bool validity = true; //determines if object is valid or invalid
+  unsigned int n; //will be used to hold the size of the bits
 };
 
 #endif
