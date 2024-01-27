@@ -45,9 +45,9 @@ public:
 
 private:
 
-  uint8_t *bits; //array of bits
+  uint8_t *bitset; //array of bits
   bool validity = true; //determines if object is valid or invalid
-  unsigned int n; //will be used to hold the size of the bits
+  int n; //will be used to hold the size of the bits
 };
 
 #endif
