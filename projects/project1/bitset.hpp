@@ -47,7 +47,7 @@ private:
 
   uint8_t *bitset; //array of bits
   bool validity = true; //determines if object is valid or invalid
-  int n; //will be used to hold the size of the bits
+  intmax_t n; //will be used to hold the size of the bits
 };
 
 #endif
