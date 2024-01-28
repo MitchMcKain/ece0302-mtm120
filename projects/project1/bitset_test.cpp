@@ -38,6 +38,10 @@ TEST_CASE( "Test bitset construction invalid string", "[bitset]" ) {
     REQUIRE_FALSE(b.good());
 }
 
+TEST_CASE( "Test bitset construction with an invalid size", "[bitset]"){
+    Bitset b(-2);
+    REQUIRE_FALSE(b.good());
+}
 TEST_CASE( "Test set", "[bitset]" ) {
     std::string s("00010001");
     Bitset b;
@@ -60,13 +64,13 @@ TEST_CASE( "Test set with size init", "[bitset]" ) {
 TEST_CASE( "Test set with parameter less than 0", "[bitset]"){
     Bitset b;
     b.set(-2);
-    REQUIRE(b.good() == false);
+    REQUIRE_FALSE(b.good());
 }
 
 TEST_CASE( "Test set with parameter greater than n"){
     Bitset b;
     b.set(b.size() + 1);
-    REQUIRE(b.good() == false);
+    REQUIRE_FALSE(b.good());
 }
 
 TEST_CASE( "Test combined", "[bitset]" ) {
@@ -98,37 +102,37 @@ TEST_CASE( "Test reset with valid parameter", "[bitset]"){
 TEST_CASE( "Test reset with parameter less than 0", "[bitset]"){
     Bitset b;
     b.reset(-2);
-    REQUIRE(b.good() == false);
+    REQUIRE_FALSE(b.good());
 }
 
 TEST_CASE( "Test reset with parameter greater than n", "[bitset]"){
     Bitset b;
     b.reset(b.size() + 1);
-    REQUIRE(b.good() == false);
+    REQUIRE_FALSE(b.good());
 }
 
 TEST_CASE( "Test toggle with parameter less than 0", "[bitset]"){
     Bitset b;
     b.toggle(-2);
-    REQUIRE(b.good() == false);
+    REQUIRE_FALSE(b.good());
 }
 
 TEST_CASE( "Test toggle with parameter greater than n", "[bitset]"){
     Bitset b;
     b.toggle(b.size() + 1);
-    REQUIRE(b.good() == false);
+    REQUIRE_FALSE(b.good());
 }
 
 TEST_CASE( "Test test with parameter less than 0", "[bitset]"){
     std::string s("1111");
     Bitset b(s);
-    REQUIRE(b.test(-2) == false);
+    REQUIRE_FALSE(b.test(-2));
 }
 
 TEST_CASE( "Test test with parameter greater than n", "[bitset]"){
     std::string s("1111");
     Bitset b(s);
-    REQUIRE(b.test(b.size() + 1) == false);
+    REQUIRE_FALSE(b.test(b.size() + 1));
 }
 
 TEST_CASE( "Test test with a valid parameter where element is a 1", "[bitset]"){
@@ -140,5 +144,5 @@ TEST_CASE( "Test test with a valid parameter where element is a 1", "[bitset]"){
 TEST_CASE( "Test test with a valid parameter where element is a 0", "[bitset]"){
     std::string s("1101");
     Bitset b(s);
-    REQUIRE(b.test(2) == false);
+    REQUIRE_FALSE(b.test(2));
 }

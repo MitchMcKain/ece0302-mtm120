@@ -17,11 +17,12 @@ Bitset::Bitset()
 
 Bitset::Bitset(intmax_t size) 
 {
-    bitset = new uint8_t[size];
     n = size;
 
     if (size <= 0)
     validity = false;
+
+    bitset = new uint8_t[size];
     
     for (intmax_t i = 0; i < n; i++)
     {   bitset[i] = 0;    }
