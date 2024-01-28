@@ -7,9 +7,8 @@ Bitset::Bitset()
     bitset = new uint8_t[8];
     n = 8;
     
-    for (int i = 0; i < n; i++)
-    {   bitset[i] = 0;
-        std::cout << bitset[i]<<std::endl;    }
+    for (int8_t i = 0; i < n; i++)
+    {   bitset[i] = 0;  }
 }
 
 Bitset::Bitset(intmax_t size) 
@@ -20,7 +19,7 @@ Bitset::Bitset(intmax_t size)
     if (size <= 0)
     validity = false;
     
-    for (int i = 0; i < n; i++)
+    for (int8_t i = 0; i < n; i++)
     {   bitset[i] = 0;    }
 }
 
@@ -29,7 +28,7 @@ Bitset::Bitset(const std::string & value)
     bitset = new uint8_t[value.length()];
     n = value.length();
 
-    for (int i = 0; i < n; i++ )
+    for (int8_t i = 0; i < n; i++ )
         {
             if (value[i] == '0')
                 bitset[i] = 0;
@@ -96,10 +95,15 @@ bool Bitset::test(intmax_t index)
 
   std::string Bitset::asString() const
   {
-    std::string result = "";
-    for (int i = 0; i < n; i++)
+    std::string result;
+
+    for (intmax_t i = 0; i < n; i++)
     {
-        result += bitset[n];
+        if (*(bitset + i) == 1)
+            result += "1";
+        else
+            result += "0";
     }
+
     return result;
   }
