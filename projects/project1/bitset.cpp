@@ -1,3 +1,7 @@
+/** @file bitset.cpp 
+ * @author Mitch McKain
+ * @date 1/28/2024*/
+
 #include "bitset.hpp"
 #include <iostream>
 #include <cstdlib>
