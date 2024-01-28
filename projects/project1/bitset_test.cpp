@@ -57,6 +57,18 @@ TEST_CASE( "Test set with size init", "[bitset]" ) {
     REQUIRE(b.asString().compare(s) == 0);
 }
 
+TEST_CASE( "Test set with parameter less than 0", "[bitset]"){
+    Bitset b;
+    b.set(-2);
+    REQUIRE(b.good() == false);
+}
+
+TEST_CASE( "Test set with parameter greater than n"){
+    Bitset b;
+    b.set(b.size() + 1);
+    REQUIRE(b.good() == false);
+}
+
 TEST_CASE( "Test combined", "[bitset]" ) {
     std::string s((1<<15) + 3, '0');
     Bitset b(s);
@@ -73,4 +85,60 @@ TEST_CASE( "Test combined", "[bitset]" ) {
         REQUIRE_FALSE(b.test(i + (1<<10)));
         REQUIRE(((b.test(i + (1<<11)) == true && s.at(i + (1<<11)) == '0') || (b.test(i + (1<<11)) == false && s.at(i + (1<<11)) == '1')));
     }
+}
+
+TEST_CASE( "Test reset with valid parameter", "[bitset]"){
+    std::string s("11111111");
+    Bitset b(s);
+    b.reset(2);
+    std::string correct("11011111");
+    REQUIRE(b.asString().compare(correct) == 0);
+}
+
+TEST_CASE( "Test reset with parameter less than 0", "[bitset]"){
+    Bitset b;
+    b.reset(-2);
+    REQUIRE(b.good() == false);
+}
+
+TEST_CASE( "Test reset with parameter greater than n", "[bitset]"){
+    Bitset b;
+    b.reset(b.size() + 1);
+    REQUIRE(b.good() == false);
+}
+
+TEST_CASE( "Test toggle with parameter less than 0", "[bitset]"){
+    Bitset b;
+    b.toggle(-2);
+    REQUIRE(b.good() == false);
+}
+
+TEST_CASE( "Test toggle with parameter greater than n", "[bitset]"){
+    Bitset b;
+    b.toggle(b.size() + 1);
+    REQUIRE(b.good() == false);
+}
+
+TEST_CASE( "Test test with parameter less than 0", "[bitset]"){
+    std::string s("1111");
+    Bitset b(s);
+    REQUIRE(b.test(-2) == false);
+}
+
+TEST_CASE( "Test test with parameter greater than n", "[bitset]"){
+    std::string s("1111");
+    Bitset b(s);
+    REQUIRE(b.test(b.size() + 1) == false);
+}
+
+TEST_CASE( "Test test with a valid parameter where element is a 1", "[bitset]"){
+    std::string s("1111");
+    Bitset b(s);
+    REQUIRE(b.test(2) == true);
+}
+
+TEST_CASE( "Test test with a valid parameter where element is a 0", "[bitset]"){
+    std::string s("1101");
+    Bitset b(s);
+    REQUIRE(b.test(2) == false);
 }
