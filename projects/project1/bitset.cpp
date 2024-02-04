@@ -19,13 +19,18 @@ Bitset::Bitset(intmax_t size)
 {
     n = size;
 
-    if (size <= 0)
-        validity = false;
-    
-    bitset = new uint8_t[n];
-    
-    for (intmax_t i = 0; i < n; i++)
-    {   bitset[i] = 0;    }
+    if (n > 0)
+        {
+            validity = true;
+            bitset = new uint8_t[n];
+            for (intmax_t i = 0; i < n; i++)
+                {   bitset[i] = 0;    }
+        }
+    else
+        {
+            bitset = new uint8_t[0];
+            validity = false;
+        }
 }
 
 Bitset::Bitset(const std::string & value)
