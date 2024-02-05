@@ -35,8 +35,8 @@ public:
   static const std::size_t maxsize = 100;
 
 private:
-
-  // TODO
+  int itemCount; //amount of items in the bag
+  T items[]; //bag
 };
 
 #include "limited_size_bag.tpp"
