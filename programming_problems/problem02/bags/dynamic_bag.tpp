@@ -13,9 +13,9 @@ DynamicBag<T>::DynamicBag(const DynamicBag<T>& x){
 
   itemCount = x.itemCount;
 
-  newItems = new T[itemCount];
+  items = new T[itemCount];
   for (std::size_t i = 0; i < itemCount; i++)
-    { *(newItems + i) = *(x.newItems + i); }
+    { *(items + i) = *(x.items + i); }
 
 }
 
@@ -54,7 +54,7 @@ bool DynamicBag<T>::add(const T& item)
   items = new T[itemCount];
   for (std::size_t i = 0; i < itemCount-1; i++)
     { 
-      { *(item + i) = *(oldItems + i); }
+      { *(items + i) = *(oldItems + i); }
     }
   delete [] oldItems;
 
@@ -99,6 +99,11 @@ std::size_t DynamicBag<T>::getCurrentSize() const
 template<typename T>
 bool DynamicBag<T>::contains(const T& item) const
 {  
+  for (int i = 0; i < itemCount; i++)
+  {
+    if (items[i] == item)
+    return true;
+  }
   return false;
 }
 
