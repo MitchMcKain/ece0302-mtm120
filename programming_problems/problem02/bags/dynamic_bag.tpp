@@ -71,21 +71,42 @@ bool DynamicBag<T>::remove(const T& item)
     {
       if (items[i] == item)
         { 
-          T* oldItems = items;
-          itemCount--;
-          items = new T[itemCount];
-          for (int j = 0; j < i; j++) //copy items up to removal item
-            { *(items + j) = *(oldItems + j); }
+          if ((i != 0) && (i != itemCount-1))
+          {
+            T* oldItems = items;
+            itemCount--;
+            items = new T[itemCount];
+            for (int j = 0; j < i; j++) //copy items up to removal item
+              { *(items + j) = *(oldItems + j); }
+            for (int k = ++i; k < itemCount; k++) //copy items after removal item
+              { *(items + k) = *(oldItems + k); }
+            delete [] oldItems;
+            return true;
+          }
 
-          for (int k = ++i; k < itemCount; k++) //copy items after removal item
-            { *(items + k) = *(oldItems + k); }
-          
-          delete [] oldItems;
+          else if (i == 0)
+          {
+            T* oldItems = items;
+            itemCount--;
+            items = new T[itemCount];
+            for (int j = 1; j < itemCount + 1; j++) // copy all items except the first item
+              { *(items + (j-1)) = *(oldItems + j); }
+            delete [] oldItems;
+            return true;
+          }
 
-          return true;
+          else if (i == itemCount-1)
+          {
+            T* oldItems = items;
+            itemCount--;
+            items = new T[itemCount];
+            for (int j = 0; j < itemCount; j++) // copy all items except the last item
+              { *(items + j) = *(oldItems + j); }
+            delete [] oldItems;
+            return true;
+          }
         }
-    }  
-
+    }
   return false;
 }
 
