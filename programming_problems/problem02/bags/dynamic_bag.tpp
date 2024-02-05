@@ -11,12 +11,12 @@ DynamicBag<T>::DynamicBag() {
 template<typename T>
 DynamicBag<T>::DynamicBag(const DynamicBag<T>& x){
 
-  /**itemCount = x.itemCount;
+  itemCount = x.itemCount;
 
   newItems = new T[itemCount];
   for (std::size_t i = 0; i < itemCount; i++)
-    { newItems[i] = x[i]; }
-**/
+    { *(newItems + i) = *(x.newItems + i); }
+
 }
 
 //Deallocate memory for the bag
@@ -29,31 +29,38 @@ DynamicBag<T>::~DynamicBag(){
 template<typename T>
 DynamicBag<T>& DynamicBag<T>::operator=(DynamicBag<T> x)
 {  
-      this->itemCount = x.itemCount;
-      for (int i = 0; i < itemCount; i++)
-        { this->items[i] = x.items[i]; }
+  swap(x);
   return *this;
 }
 
 //Swap an item
 template<typename T>
-void DynamicBag<T>::swap(DynamicBag<T>& x){}
+void DynamicBag<T>::swap(DynamicBag<T>& x)
+{
+  std::swap(items, x.items);
+  std::swap(itemCount, x.itemCount);
+}
+
 
 //Add an item to the bag
 template<typename T>
 bool DynamicBag<T>::add(const T& item)
 {
   T* oldItems = items;
-  items = new T[itemCount + 1];
-  for (std::size_t i = 0; i < itemCount; i++)
-    { items[i] = oldItems[i]; }
-  delete [] oldItems;
+
+  bool added = false;
 
   itemCount++;
+  items = new T[itemCount];
+  for (std::size_t i = 0; i < itemCount-1; i++)
+    { 
+      { *(item + i) = *(oldItems + i); }
+    }
+  delete [] oldItems;
+
   items[itemCount-1] = item;
 
   return true;
-
 }
 
 //Remove an item from the bag

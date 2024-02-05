@@ -36,7 +36,7 @@ public:
 
 private:
   int itemCount; //amount of items in the bag
-  T items[]; //bag
+  T items[maxsize]; //bag
 };
 
 #include "limited_size_bag.tpp"

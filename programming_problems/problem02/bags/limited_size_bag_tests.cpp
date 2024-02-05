@@ -77,9 +77,8 @@ TEST_CASE("Testing clear", "[LimitedSizeBag]"){
 TEST_CASE("Testing getFrequencyOf", "[LimitedSizeBag]"){
   LimitedSizeBag<int> b;
   b.add(0);
-  b.add(0);
-  b.add(0);
   b.add(1);
-  std::size_t test = 3;
+  b.add(0);
+  std::size_t test = 2;
   REQUIRE(b.getFrequencyOf(0) == test);
 }

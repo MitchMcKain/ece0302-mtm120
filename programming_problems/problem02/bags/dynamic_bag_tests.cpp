@@ -17,3 +17,8 @@ TEST_CASE("Calling all public members", "[DynamicBag]"){
   b.getFrequencyOf(0);
   b.contains(0);
 }
+
+TEST_CASE("Testing add", "[DynamicBag]"){
+  DynamicBag<int> b;
+  REQUIRE(b.add(0));
+}

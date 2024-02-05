@@ -26,7 +26,7 @@ bool LimitedSizeBag<T>::remove(const T& item)
 {
   for (int i = 0; i < itemCount; i++)
     {
-      if (items[i] = item)
+      if (items[i] == item)
       {
         itemCount--;
         items[i] = items[itemCount];
