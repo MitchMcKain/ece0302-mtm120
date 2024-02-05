@@ -67,19 +67,26 @@ bool DynamicBag<T>::add(const T& item)
 template<typename T>
 bool DynamicBag<T>::remove(const T& item)
 {
-  bool removal = false;
-
   for (int i = 0; i < itemCount; i++)
     {
       if (items[i] == item)
         { 
-          items[i] = items[itemCount - 1];
+          T* oldItems = items;
           itemCount--;
-          removal = true;
+          items = new T[itemCount];
+          for (int j = 0; j < i; j++) //copy items up to removal item
+            { *(items + j) = *(oldItems + j); }
+
+          for (int k = ++i; k < itemCount; k++) //copy items after removal item
+            { *(items + k) = *(oldItems + k); }
+          
+          delete [] oldItems;
+
+          return true;
         }
     }  
-    
-  return removal;
+
+  return false;
 }
 
 //Test if the bag is empty
