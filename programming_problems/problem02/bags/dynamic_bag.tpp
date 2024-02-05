@@ -67,15 +67,19 @@ bool DynamicBag<T>::add(const T& item)
 template<typename T>
 bool DynamicBag<T>::remove(const T& item)
 {
+  bool removal = false;
+
   for (int i = 0; i < itemCount; i++)
     {
-      if (items[i] = item)
+      if (items[i] == item)
         { 
           items[i] = items[itemCount - 1];
           itemCount--;
+          removal = true;
         }
     }  
-  return true;
+    
+  return removal;
 }
 
 //Test if the bag is empty
@@ -120,5 +124,13 @@ void DynamicBag<T>::clear(){
 template<typename T>
 std::size_t DynamicBag<T>::getFrequencyOf(const T & item) const
 {
-  return 0;
+  std::size_t count = 0;
+
+  for (std::size_t i = 0; i < itemCount; i++)
+  {
+    if ( *(items + i) == item)
+      count++;
+  }
+
+  return count;
 };

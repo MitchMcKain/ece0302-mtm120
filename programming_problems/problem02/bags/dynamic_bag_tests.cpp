@@ -18,6 +18,11 @@ TEST_CASE("Calling all public members", "[DynamicBag]"){
   b.contains(0);
 }
 
+TEST_CASE("Test default constructor", "[DynamicBag]"){
+  DynamicBag<int> b;
+  REQUIRE(b.getCurrentSize() == 0);
+}
+
 TEST_CASE("Testing add", "[DynamicBag]"){
   DynamicBag<int> b;
   REQUIRE(b.add(0));
@@ -63,4 +68,46 @@ TEST_CASE("Testing clear", "[Dynamic Bag]"){
   b.clear();
   REQUIRE_FALSE(b.contains(0));
   REQUIRE_FALSE(b.contains(1));
+  REQUIRE(b.getCurrentSize() == 0);
+}
+
+TEST_CASE("Test remove with included item", "[DynamicBag]"){
+  DynamicBag<int> b;
+  b.add(0);
+  REQUIRE(b.remove(0));
+  REQUIRE_FALSE(b.contains(0));
+  REQUIRE(b.getCurrentSize() == 0);
+}
+
+TEST_CASE("Test remove with non-included item", "[DynamicBag]"){
+  DynamicBag<int> b;
+  b.add(0);
+  REQUIRE_FALSE(b.remove(1));
+  REQUIRE(b.contains(0));
+  REQUIRE(b.getCurrentSize() == 1);
+}
+
+TEST_CASE("Testing isEmpty with empty bag", "[DynamicBag]"){
+  DynamicBag<int> b;
+  REQUIRE(b.isEmpty());
+}
+
+TEST_CASE("Testing isEmpty with a filled bag", "[DynamicBag]"){
+  DynamicBag<int> b;
+  b.add(0);
+  REQUIRE_FALSE(b.isEmpty());
+}
+
+TEST_CASE("Testing getCurrentSize alone", "[DynamicBag]"){
+  DynamicBag<int> b;
+  b.add(0);
+  REQUIRE(b.getCurrentSize() == 1);
+}
+
+TEST_CASE("Testing getFrequencyOf", "[DynamicBag]"){
+  DynamicBag<int> b;
+  b.add(0);
+  b.add(0);
+  b.add(1);
+  REQUIRE(b.getFrequencyOf(0) == 2);
 }
