@@ -145,7 +145,7 @@ void DynamicBag<T>::clear(){
   itemCount = 0;
   T* oldItems = items;
   items = new T[0];
-  delete oldItems;
+  delete [] oldItems;
 }
 
 //Return how many times an item exists in the bag
