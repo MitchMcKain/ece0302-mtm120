@@ -2,16 +2,11 @@
 
 template <typename T>
 LinkedList<T>::LinkedList()
-{
-  itemCount = 0;
-}
+{ itemCount = 0; }
 
 template <typename T>
 LinkedList<T>::~LinkedList()
-{
-  delete headPtr;
-  headPtr = nullptr;
-}
+{ clear(); }
 
 template <typename T>
 LinkedList<T>::LinkedList(const LinkedList<T>& x) //from the textbook
@@ -79,22 +74,17 @@ bool LinkedList<T>::insert(std::size_t position, const T& item)
 
   else if (position == 0) //inserting at the beginning
     {
-      Node<T>* curPtr = new Node<T>(item);
-      curPtr->setNext(headPtr);
-      headPtr = curPtr;
+      Node<T>* newNode = new Node<T>(item, headPtr);
+      headPtr = newNode;
     }
 
   else //inserting anywhere else
     {
-      Node<T>* curNode = new Node<T>();
-      curNode = headPtr; //start this node at the beginning for loop purposes
-      Node<T>* newNode = new Node<T>(item); //node that we wish to add
-      for (size_t i = 0; i < position; i++)
+      Node<T>* curNode = headPtr; //start this node at the beginning for loop purposes
+      for (size_t i = 0; i < position - 1; i++)
         { curNode = curNode->getNext(); }
-      Node<T>* tempNode = new Node<T>();
-      tempNode = curNode->getNext(); //node that is in the place proceding our inserting node
+      Node<T>* newNode = new Node<T>(item, curNode->getNext()); //node for the new item
       curNode->setNext(newNode);
-      newNode->setNext(tempNode);
     }
 
     itemCount++;
@@ -104,7 +94,28 @@ bool LinkedList<T>::insert(std::size_t position, const T& item)
 template <typename T>
 bool LinkedList<T>::remove(std::size_t position)
 {
-  return false;
+  if (position < 0 || position > itemCount)
+    return false;
+
+  else if (position == 0)
+    {
+      Node<T>* oldHead = headPtr; //replace the head node with the second node
+      headPtr = headPtr->getNext();
+      delete oldHead;
+    }
+
+  else
+    {
+      Node<T>* curPtr = headPtr;
+      for (size_t i = 0; i < position - 1; i++)
+        { curPtr = curPtr->getNext(); }
+      Node<T>* nodeToRemove = curPtr->getNext();
+      curPtr->setNext(nodeToRemove->getNext());
+      delete nodeToRemove;
+    }
+
+    itemCount--;
+    return true;
 }
 
 template <typename T>
@@ -126,12 +137,31 @@ void LinkedList<T>::clear() //from the textbook
 template <typename T>
 T LinkedList<T>::getEntry(std::size_t position) const
 {
-  //TODO
-  return T();
+  if (position < 0 || position >= itemCount)
+    return T();
+
+  else
+  {
+    Node<T>* curNode = headPtr;
+    for (size_t i = 0; i < position; i++)
+      { curNode = curNode->getNext(); }
+    return curNode->getItem();
+  }
 }
 
 template <typename T>
 void LinkedList<T>::setEntry(std::size_t position, const T& newValue)
 {
-  
+  if (position >= 0 && position < itemCount)
+    {
+      if (position == 0)
+        { headPtr->setItem(newValue); }
+      else
+        {
+          Node<T>* curPtr = new Node<T>();
+          for (size_t i = 0; i < position; i++)
+            { curPtr = curPtr->getNext(); }
+          curPtr->setItem(newValue);
+        }
+    }
 }
