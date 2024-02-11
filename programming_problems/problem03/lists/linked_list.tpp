@@ -152,16 +152,12 @@ T LinkedList<T>::getEntry(std::size_t position) const
 template <typename T>
 void LinkedList<T>::setEntry(std::size_t position, const T& newValue)
 {
-  if (position >= 0 && position < itemCount)
-    {
-      if (position == 0)
-        { headPtr->setItem(newValue); }
-      else
-        {
-          Node<T>* curPtr = new Node<T>();
-          for (size_t i = 0; i < position; i++)
-            { curPtr = curPtr->getNext(); }
-          curPtr->setItem(newValue);
-        }
-    }
+  if (position < 0 || position >= itemCount)
+  { return; } //do nothing
+
+  Node<T>* curNode = headPtr;
+  for (size_t i = 0; i < position; i++)
+    { curNode = curNode->getNext(); }
+  curNode->setItem(newValue);
+  return;
 }

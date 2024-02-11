@@ -135,4 +135,5 @@ void ArrayList<T>::setEntry(std::size_t position, const T& newValue)
 {
   if (position >= 0 && position < itemCount)
     *(list + position) = newValue;
+  else {}
 }
