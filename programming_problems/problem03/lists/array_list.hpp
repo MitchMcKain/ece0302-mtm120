@@ -46,8 +46,9 @@ public:
 
 private:
 
-  // TODO
-  
+  T* list; //Where all of the items will be stored
+  size_t itemCount; //Count for the total number of items in the list
+
 };
 
 #include "array_list.tpp"
