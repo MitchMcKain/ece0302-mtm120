@@ -116,9 +116,9 @@ template <typename T>
 void ArrayList<T>::clear()
 { 
   itemCount = 0;
-  T* oldItems = items;
-  items = new T[0];
-  delete [] oldItems;
+  T* oldList = list;
+  list = new T[0];
+  delete [] oldList;
 }
 
 template <typename T>
