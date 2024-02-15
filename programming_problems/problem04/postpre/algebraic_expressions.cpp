@@ -6,6 +6,7 @@ using std::string;
 #include <cctype> // for isalpha
 
 #include "algebraic_expressions.hpp"
+#include <stack>
 
 bool isoperator(char ch) {
   return ((ch == '+') || (ch == '-') || (ch == '/') || (ch == '*'));
@@ -43,6 +44,41 @@ bool isPost(string s) {
 
 void convert(string &postfix, string &prefix) {
 
-  // TODO
+  /* string convert(string &preExp) {
+  preLength = the length of preExp
+  ch = first character in the preExp
+  postExp = an empty string
+  if (ch is a lowercase letter)
+    // base case-single identifier
+    postExp = postExp + ch
+  else
+    //pre has the form <operator> <prefix1> <prefix2>
+    endFirst = endPre(preExp, 1) //Find the end of prefix1
+    //Recursively convert prefix1 into postfix form
+    postExp = postExp + convert(preExp[1..endFirst])
+    //Recursively convert prefix2 into postfix form
+    postExp = postExp + convert(preExp[endFirst + 1..preLength - 1])
+    postExp = postExp + ch //Append the operator to the end of postExp
+  }
+  return postExp
+  } */
   
+  std::stack<string> expression;
+  string postExp = postfix;
+  int postLength = postfix.length();
+  char ch = postfix[0];
+  string preExp = "";
+  if (isoperator(ch) ) // see if the first element is an operator
+    { 
+      prefix += ch;
+      expression.push(prefix);
+    }
+  else // element must be a number
+    {
+      int endFirst = endPost(postfix, postLength);
+      preExp += convert(postExp.substr(1,endFirst), preExp);
+      preExp += convert(postExp.substr(endFirst + 1, postLength -1), preExp);
+      preExp += ch;
+      expression.push(ch);
+    }
 }
