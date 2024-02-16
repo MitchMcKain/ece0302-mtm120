@@ -55,8 +55,10 @@ void convert(string &postfix, string &prefix) {
         {
           string op = "";
           op += ch;
-          string first = expression.top(); //get the item from top of stack
-          string second = expression.top(); //get the new item that has been moved to top
+          string second = expression.top(); //get the item from top of stack
+          expression.pop(); //clear it out to bring up next item
+          string first = expression.top(); //get the new item that has been moved to top
+          expression.pop(); //make room for final expression
           op += first + second; //make the full prefix expression
           expression.push(op); //push full prefix expression to stack
         }
@@ -67,4 +69,6 @@ void convert(string &postfix, string &prefix) {
         expression.push(op); //push operand onto the stack
       }
     }
+
+    prefix = expression.top(); //make the string "prefix" our final expression from stack
 }
