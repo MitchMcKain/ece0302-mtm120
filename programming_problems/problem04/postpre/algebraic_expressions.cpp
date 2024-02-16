@@ -43,42 +43,28 @@ bool isPost(string s) {
 }
 
 void convert(string &postfix, string &prefix) {
-
-  /* string convert(string &preExp) {
-  preLength = the length of preExp
-  ch = first character in the preExp
-  postExp = an empty string
-  if (ch is a lowercase letter)
-    // base case-single identifier
-    postExp = postExp + ch
-  else
-    //pre has the form <operator> <prefix1> <prefix2>
-    endFirst = endPre(preExp, 1) //Find the end of prefix1
-    //Recursively convert prefix1 into postfix form
-    postExp = postExp + convert(preExp[1..endFirst])
-    //Recursively convert prefix2 into postfix form
-    postExp = postExp + convert(preExp[endFirst + 1..preLength - 1])
-    postExp = postExp + ch //Append the operator to the end of postExp
-  }
-  return postExp
-  } */
-  
+  //I tried modeling this after the textbook example first, but I couldn't figure it out with recursion -_-
   std::stack<string> expression;
-  string postExp = postfix;
-  int postLength = postfix.length();
-  char ch = postfix[0];
-  string preExp = "";
-  if (isoperator(ch) ) // see if the first element is an operator
-    { 
-      prefix += ch;
-      expression.push(prefix);
-    }
-  else // element must be a number
+
+  int length = postfix.length();
+
+  for (int i = 0; i < length; i++)
     {
-      int endFirst = endPost(postfix, postLength);
-      preExp += convert(postExp.substr(1,endFirst), preExp);
-      preExp += convert(postExp.substr(endFirst + 1, postLength -1), preExp);
-      preExp += ch;
-      expression.push(ch);
+      char ch = postfix[i];
+      if (isoperator(ch)) //if we encounter an operator, we must perform operation on two most recent operands
+        {
+          string op = "";
+          op += ch;
+          string first = expression.top(); //get the item from top of stack
+          string second = expression.top(); //get the new item that has been moved to top
+          op += first + second; //make the full prefix expression
+          expression.push(op); //push full prefix expression to stack
+        }
+      else //we ecounter an operand
+      {
+        string op = "";
+        op += ch;
+        expression.push(op); //push operand onto the stack
+      }
     }
 }
