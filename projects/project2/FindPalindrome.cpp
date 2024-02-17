@@ -56,10 +56,7 @@ FindPalindrome::~FindPalindrome()
 }
 
 int FindPalindrome::number() const
-{
-	// TODO need to implement this...
-	return 10;
-}
+{ return numberOfPalindromes; }
 
 void FindPalindrome::clear()
 {

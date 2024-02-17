@@ -24,3 +24,9 @@ TEST_CASE("Test constructor", "[FindPalindrome]")
 {
 	FindPalindrome b;
 }
+
+TEST_CASE("Test number", "[FindPalindrome]")
+{
+	FindPalindrome b;
+	REQUIRE("b.number() == 0");
+}
