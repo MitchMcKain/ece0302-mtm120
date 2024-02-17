@@ -30,3 +30,9 @@ TEST_CASE("Test number", "[FindPalindrome]")
 	FindPalindrome b;
 	REQUIRE("b.number() == 0");
 }
+
+TEST_CASE("Test recursiveFindPalindrome", "[FindPalindrome]")
+{
+	FindPalindrome b;
+	
+}

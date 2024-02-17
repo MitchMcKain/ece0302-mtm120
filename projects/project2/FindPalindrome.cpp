@@ -24,8 +24,27 @@ static void convertToLowerCase(string & value)
 void FindPalindrome::recursiveFindPalindromes(vector<string>
         candidateStringVector, vector<string> currentStringVector)
 {
-	// TODO need to implement this recursive function!
-	return;
+	if (currentStringVector.size() == 0)
+	{
+		string pal = "";
+		for (int i = 0; i < candidateStringVector.size(); i++)
+		{ pal += candidateStringVector[i]; }
+		
+		pal += candidateStringVector[0];
+		if (isPalindrome(pal))
+			{ numberOfPalindromes++; }
+		return;
+	}
+
+	vector<string> newCandidateVector = candidateStringVector;
+	vector<string> newCurrentVector = currentStringVector;
+
+	for (int i = 0; i < currentStringVector.size(); i++)
+		{
+			newCandidateVector.push_back(currentStringVector[i]);
+			newCurrentVector.erase(newCurrentVector.begin() + i);
+			recursiveFindPalindromes(newCandidateVector, newCurrentVector);
+		}
 }
 
 // private function to determine if a string is a palindrome (given, you
@@ -81,8 +100,26 @@ bool FindPalindrome::cutTest2(const vector<string> & stringVector1,
 
 bool FindPalindrome::add(const string & value)
 {
-	// TODO need to implement this...
-	return false;
+	bool valid;
+
+	for (int i = 0; i < value.length(); i++)//see if a character is invalid
+		{ 
+			valid = isalpha(value[i]);
+			if (!valid)
+				return valid;
+		 }
+	for (int i = 0; i < wordCloud.size(); i++) //check value for uniqueness
+		{
+			string one = wordCloud[i];
+			convertToLowerCase(one);
+			string two = value;
+			convertToLowerCase(two);
+			if (one != two)
+				return false;
+		}
+
+	wordCloud.push_back(value);
+	return true;
 }
 
 bool FindPalindrome::add(const vector<string> & stringVector)
