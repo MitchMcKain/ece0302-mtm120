@@ -31,6 +31,25 @@ TEST_CASE("Test number", "[FindPalindrome]")
 	REQUIRE("b.number() == 0");
 }
 
+TEST_CASE("Test add with valid word" , "[FindPalindrome]")
+{
+	FindPalindrome b;
+	REQUIRE(b.add("a"));
+}
+
+TEST_CASE("Test add with invalid word", "[FindPalindrome]")
+{
+	FindPalindrome b;
+	REQUIRE_FALSE(b.add("!"));
+}
+
+TEST_CASE("Test add with a non-unique word" , "[FindPalindrome]")
+{
+	FindPalindrome b;
+	b.add("a");
+	REQUIRE_FALSE(b.add("A"));
+}
+
 TEST_CASE("Test recursiveFindPalindrome", "[FindPalindrome]")
 {
 	FindPalindrome b;

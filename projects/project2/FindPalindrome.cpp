@@ -114,7 +114,7 @@ bool FindPalindrome::add(const string & value)
 			convertToLowerCase(one);
 			string two = value;
 			convertToLowerCase(two);
-			if (one != two)
+			if (one == two)
 				return false;
 		}
 
