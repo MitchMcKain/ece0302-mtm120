@@ -50,8 +50,28 @@ TEST_CASE("Test add with a non-unique word" , "[FindPalindrome]")
 	REQUIRE_FALSE(b.add("A"));
 }
 
-TEST_CASE("Test recursiveFindPalindrome", "[FindPalindrome]")
+TEST_CASE("Test add with invalid vector" , "[FindPalindrome]")
 {
 	FindPalindrome b;
-	
+	std::vector<std::string> a;
+	a.push_back("!");
+	REQUIRE_FALSE(b.add(a));	
+}
+
+TEST_CASE("Test add with non-unique vector" , "[FindPalindrome]")
+{
+	FindPalindrome b;
+	b.add("a");
+	std::vector<std::string> a;
+	a.push_back("A");
+	REQUIRE_FALSE(b.add(a));
+}
+
+TEST_CASE("Test add with valid vector" , "[FindPalindrome]")
+{
+	FindPalindrome b;
+	b.add("a");
+	std::vector<std::string> a;
+	a.push_back("b");
+	REQUIRE(b.add(a));
 }

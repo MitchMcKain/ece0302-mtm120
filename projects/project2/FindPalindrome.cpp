@@ -30,21 +30,25 @@ void FindPalindrome::recursiveFindPalindromes(vector<string>
 		for (int i = 0; i < candidateStringVector.size(); i++)
 		{ pal += candidateStringVector[i]; }
 		
-		pal += candidateStringVector[0];
 		if (isPalindrome(pal))
 			{ numberOfPalindromes++; }
 		return;
 	}
 
-	vector<string> newCandidateVector = candidateStringVector;
-	vector<string> newCurrentVector = currentStringVector;
+	else
+	{
+	vector<string> newCandidateVector;
+	vector<string> newCurrentVector;
 
 	for (int i = 0; i < currentStringVector.size(); i++)
 		{
+			newCandidateVector = candidateStringVector;
+			newCurrentVector = currentStringVector;
 			newCandidateVector.push_back(currentStringVector[i]);
 			newCurrentVector.erase(newCurrentVector.begin() + i);
 			recursiveFindPalindromes(newCandidateVector, newCurrentVector);
 		}
+	}
 }
 
 // private function to determine if a string is a palindrome (given, you
@@ -119,13 +123,42 @@ bool FindPalindrome::add(const string & value)
 		}
 
 	wordCloud.push_back(value);
+	
+	vector<string> blank;
+	blank.clear(); //empty vector for candidateStringVector
+	numberOfPalindromes = 0;
+	recursiveFindPalindromes(blank, wordCloud);
 	return true;
 }
 
 bool FindPalindrome::add(const vector<string> & stringVector)
 {
-	// TODO need to implement this...
-	return false;
+	bool valid;
+	for (int i = 0; i < stringVector.size(); i++) //see if a character is invalid
+		{
+			for (int j = 0; j < stringVector[i].length(); j++)
+			{
+				valid = isalpha(stringVector[i][j]);
+				if (!valid)
+					return false;
+			}
+		}
+	for (int i = 0; i < stringVector.size(); i++) //check stringVector strings for uniqueness
+		{
+			for (int j = 0; j < wordCloud.size(); j++)
+				{
+					string one = stringVector[i];
+					convertToLowerCase(one);
+					string two = wordCloud[j];
+					convertToLowerCase(two);
+					if (one == two)
+						return false;
+				}
+		}
+	
+	for (int i = 0; i < stringVector.size(); i++) //add all strings from stringVector to wordCloud 
+		{ wordCloud.push_back(stringVector[i]); }
+	return true;
 }
 
 vector< vector<string> > FindPalindrome::toVector() const
