@@ -48,9 +48,7 @@ bool FindPalindrome::isPalindrome(string currentString) const
 //------------------- PUBLIC CLASS METHODS -------------------------------------
 
 FindPalindrome::FindPalindrome()
-{
-	// TODO need to implement this...
-}
+{ clear(); }
 
 FindPalindrome::~FindPalindrome()
 {
@@ -65,7 +63,10 @@ int FindPalindrome::number() const
 
 void FindPalindrome::clear()
 {
-	// TODO need to implement this...
+	wordCloud.clear();
+	numberOfWords = 0;
+	numberOfPossible = 0;
+	numberOfPalindromes = 0;
 }
 
 bool FindPalindrome::cutTest1(const vector<string> & stringVector)
