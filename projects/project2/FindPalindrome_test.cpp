@@ -76,27 +76,6 @@ TEST_CASE("Test add with valid vector" , "[FindPalindrome]")
 	REQUIRE(b.add(a));
 }
 
-TEST_CASE("Test cutTest1 with valid even vector" , "[FindPalindrome]")
-{
-	FindPalindrome b;
-	std::vector<std::string> test = {"abba"};
-	REQUIRE(b.cutTest1(test));
-}
-
-TEST_CASE("Test cutTest1 with invalid even vector" , "[FindPalindrome]")
-{
-	FindPalindrome b;
-	std::vector<std::string> test = {"aaab"};
-	REQUIRE_FALSE(b.cutTest1(test));
-}
-
-TEST_CASE("Test cutTest1 with middle character appearing even times" , "[FindPalindrome]")
-{
-	FindPalindrome b;
-	std::vector<std::string> test = {"aabba"};
-	REQUIRE_FALSE(b.cutTest1(test));
-}
-
 TEST_CASE("Test cutTest1 with perfect even case" , "[FindPalindrome]")
 {
 	FindPalindrome b;
@@ -104,6 +83,21 @@ TEST_CASE("Test cutTest1 with perfect even case" , "[FindPalindrome]")
 	REQUIRE(b.cutTest1(test));
 }
 
+TEST_CASE("Test cutTest1 with perfect even case different capitaliztion")
+{
+	FindPalindrome b;
+	std::vector<std::string> test = {"abbA"};
+	REQUIRE(b.cutTest1(test));
+}
+
+TEST_CASE("Test cutTest1 with even vector and a character appearing odd times" , "[FindPalindrome]")
+{
+	FindPalindrome b;
+	std::vector<std::string> test = {"aaab"};
+	REQUIRE_FALSE(b.cutTest1(test));
+}
+
+//TEST_CASE("Test cutTest1 with even vector and a character appearing ")
 TEST_CASE("Test cutTest1 with perfect odd case" , "[FindPalindrome]")
 {
 	FindPalindrome b;
@@ -111,7 +105,21 @@ TEST_CASE("Test cutTest1 with perfect odd case" , "[FindPalindrome]")
 	REQUIRE(b.cutTest1(test));
 }
 
-TEST_CASE("Test cutTest1 with middle character appearing odd times and other character appears odd times", "[FindPalindrome]")
+TEST_CASE("Test cutTest1 perfect odd case different capitaliztion")
+{
+	FindPalindrome b;
+	std::vector<std::string> test = {"Aaa", "b", "aaa"};
+	REQUIRE(b.cutTest1(test));
+}
+
+TEST_CASE("Test cutTest1 with odd vector of middle character appearing even times" , "[FindPalindrome]")
+{
+	FindPalindrome b;
+	std::vector<std::string> test = {"aabba"};
+	REQUIRE_FALSE(b.cutTest1(test));
+}
+
+TEST_CASE("Test cutTest1 with odd vector of middle character appearing odd times and other character appears odd times", "[FindPalindrome]")
 {
 	FindPalindrome b;
 	std::vector<std::string> test = {"aacba"};

@@ -111,12 +111,19 @@ bool FindPalindrome::cutTest1(const vector<string> & stringVector)
 				for (int j = 0; j < stringVector[i].length(); j++) 
 					{
 						char currentChar = stringVector[i][j];
+						string charString = "";
+						charString += currentChar;
+						convertToLowerCase(charString);
 						count = 0;
 						for (int k = 0; k < stringVector.size(); k++) 
 							{
 								for (int l = 0; l < stringVector[k].length(); l++) 
 									{
-										if (currentChar == stringVector[k][l]) 
+										char testChar = stringVector[k][l];
+										string testString = "";
+										testString += testChar;
+										convertToLowerCase(testString);
+										if (charString == testString) 
 											{ count++; }
 									}
 							}
@@ -141,26 +148,37 @@ bool FindPalindrome::cutTest1(const vector<string> & stringVector)
 		if (count % 2 == 0) //see if middle character appeared an even number of times
 			{ return false; }
 		
+		int odds = 0;
 		count = 0;
 		for (int i = 0; i < stringVector.size(); i++) 
 			{
 				for (int j = 0; j < stringVector[i].length(); j++) 
 					{
 						char currentChar = stringVector[i][j];
+						string charString = "";
+						charString += currentChar;
+						convertToLowerCase(charString);
 						count = 0;
 						for (int k = 0; k < stringVector.size(); k++) 
 							{
 								for (int l = 0; l < stringVector[k].length(); l++) 
 									{
-										if (currentChar == stringVector[k][l]) 
+										char testChar = stringVector[k][l];
+										string testString = "";
+										testString += testChar;
+										convertToLowerCase(testString);
+										if (charString == testString) 
 											{ count++; }
 									}
 							}
 						if (count % 2 != 0 && currentChar != middle) 
-							{ return false; } //something appears odd times
+							{ odds++; } //something appears odd times
 					}
     		}
-    	return true; //everything appears even times
+		if (odds > 1)
+			{ return false; }
+		else
+    		{ return true; } //everything appears even times
 	 }
 }
 
