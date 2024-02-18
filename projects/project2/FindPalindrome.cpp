@@ -31,7 +31,10 @@ void FindPalindrome::recursiveFindPalindromes(vector<string>
 		{ pal += candidateStringVector[i]; }
 		
 		if (isPalindrome(pal))
-			{ numberOfPalindromes++; }
+			{ 
+				numberOfPalindromes++;
+				totalPalindromes.push_back(candidateStringVector);
+			}
 		return;
 	}
 
@@ -84,6 +87,9 @@ int FindPalindrome::number() const
 void FindPalindrome::clear()
 {
 	wordCloud.clear();
+	wordCloud.resize(0);
+	totalPalindromes.clear();
+	totalPalindromes.resize(0);
 	numberOfWords = 0;
 	numberOfPossible = 0;
 	numberOfPalindromes = 0;
@@ -91,8 +97,71 @@ void FindPalindrome::clear()
 
 bool FindPalindrome::cutTest1(const vector<string> & stringVector)
 {
-	// TODO need to implement this...
-	return false;
+	int characters;
+	string totalVector = "";
+	for (int i = 0; i < stringVector.size(); i++)
+		{ totalVector += stringVector[i]; }
+	characters = totalVector.length();
+	
+	 if (characters % 2 == 0) //we have an even number of characters
+	 {
+		int count = 0;
+		for (int i = 0; i < stringVector.size(); i++) 
+			{
+				for (int j = 0; j < stringVector[i].length(); j++) 
+					{
+						char currentChar = stringVector[i][j];
+						count = 0;
+						for (int k = 0; k < stringVector.size(); k++) 
+							{
+								for (int l = 0; l < stringVector[k].length(); l++) 
+									{
+										if (currentChar == stringVector[k][l]) 
+											{ count++; }
+									}
+							}
+						if (count % 2 != 0) 
+							{ return false; } // Found an odd count
+					}
+    		}
+    	return true; // All counts are even
+	 }
+	 else //we have an odd number of characters
+	 { 
+		char middle = totalVector[characters/2]; //get the middle character of the entire vector
+		int count = 0;
+		for (int i = 0; i < stringVector.size(); i++) //compare middle character with all the characters in the vector
+			{
+				for (int j = 0; j < stringVector[i].length(); j++)
+					{
+						if (middle == stringVector[i][j])
+							{ count++; }
+					}
+			}
+		if (count % 2 == 0) //see if middle character appeared an even number of times
+			{ return false; }
+		
+		count = 0;
+		for (int i = 0; i < stringVector.size(); i++) 
+			{
+				for (int j = 0; j < stringVector[i].length(); j++) 
+					{
+						char currentChar = stringVector[i][j];
+						count = 0;
+						for (int k = 0; k < stringVector.size(); k++) 
+							{
+								for (int l = 0; l < stringVector[k].length(); l++) 
+									{
+										if (currentChar == stringVector[k][l]) 
+											{ count++; }
+									}
+							}
+						if (count % 2 != 0 && currentChar != middle) 
+							{ return false; } //something appears odd times
+					}
+    		}
+    	return true; //everything appears even times
+	 }
 }
 
 bool FindPalindrome::cutTest2(const vector<string> & stringVector1,
@@ -104,8 +173,8 @@ bool FindPalindrome::cutTest2(const vector<string> & stringVector1,
 
 bool FindPalindrome::add(const string & value)
 {
+	totalPalindromes.clear();
 	bool valid;
-
 	for (int i = 0; i < value.length(); i++)//see if a character is invalid
 		{ 
 			valid = isalpha(value[i]);
@@ -133,37 +202,37 @@ bool FindPalindrome::add(const string & value)
 
 bool FindPalindrome::add(const vector<string> & stringVector)
 {
+	totalPalindromes.clear();
 	bool valid;
-	for (int i = 0; i < stringVector.size(); i++) //see if a character is invalid
-		{
-			for (int j = 0; j < stringVector[i].length(); j++)
-			{
-				valid = isalpha(stringVector[i][j]);
-				if (!valid)
-					return false;
-			}
-		}
-	for (int i = 0; i < stringVector.size(); i++) //check stringVector strings for uniqueness
-		{
-			for (int j = 0; j < wordCloud.size(); j++)
+	for (int i = 0; i < stringVector.size(); i++)
+	{
+		string word = stringVector[i];
+			for (int j = 0; j < word.length(); j++)
 				{
-					string one = stringVector[i];
-					convertToLowerCase(one);
-					string two = wordCloud[j];
-					convertToLowerCase(two);
-					if (one == two)
+					valid = isalpha(word[j]); //see if a character is valid
+						if (!valid)
+							return false;
+				}
+			for (int k = 0; k < wordCloud.size(); k++) //see is a word is non-unique
+				{
+					string word1 = word;
+					convertToLowerCase(word1);
+					string word2 = wordCloud[k];
+					convertToLowerCase(word2);
+					if (word1 == word2)
 						return false;
 				}
-		}
-	
-	for (int i = 0; i < stringVector.size(); i++) //add all strings from stringVector to wordCloud 
-		{ wordCloud.push_back(stringVector[i]); }
+	//add all strings from stringVector to wordCloud 
+	wordCloud.push_back(stringVector[i]); 
+	}
+	vector<string> blank;
+	blank.clear(); //empty vector for candidateStringVector
+	numberOfPalindromes = 0;
+	totalPalindromes.clear();
+	recursiveFindPalindromes(blank, wordCloud);
 	return true;
 }
 
 vector< vector<string> > FindPalindrome::toVector() const
-{
-	// TODO need to implement this...
-	return vector< vector<string> >();
-}
+{ return totalPalindromes; }
 

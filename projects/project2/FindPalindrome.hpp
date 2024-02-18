@@ -13,6 +13,7 @@ private:
 	int numberOfWords;
 	int numberOfPossible;
 	int numberOfPalindromes;
+	std::vector< std::vector<std::string> > totalPalindromes;
 	
 	// private stuff that you are given or is specified in the project
 	// description...
