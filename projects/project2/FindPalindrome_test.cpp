@@ -125,6 +125,13 @@ TEST_CASE("Test cutTest1 with odd vector of middle character appearing odd times
 	REQUIRE_FALSE(b.cutTest1(test));
 }
 
+TEST_CASE("Test cutTest1 with middle character appearing mutiple times" , "[FindPalindrome]")
+{
+	FindPalindrome b;
+	std::vector<std::string> test = {"ab", "a", "ba"};
+	REQUIRE(b.cutTest1(test));
+}
+
 TEST_CASE("Test cutTest2 with even strings valid" , "[FindPalindrome]")
 {
 	FindPalindrome b;

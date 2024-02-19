@@ -97,86 +97,36 @@ void FindPalindrome::clear()
 
 bool FindPalindrome::cutTest1(const vector<string> & stringVector)
 {
-	int characters;
 	string totalVector = "";
 	for (int i = 0; i < stringVector.size(); i++)
 		{ totalVector += stringVector[i]; }
-	characters = totalVector.length();
-	
-	 if (characters % 2 == 0) //we have an even number of characters
-	 {
-		int count = 0;
-		for (int i = 0; i < stringVector.size(); i++) 
-			{
-				for (int j = 0; j < stringVector[i].length(); j++) 
-					{
-						char currentChar = stringVector[i][j];
-						string charString = "";
-						charString += currentChar;
-						convertToLowerCase(charString);
-						count = 0;
-						for (int k = 0; k < stringVector.size(); k++) 
-							{
-								for (int l = 0; l < stringVector[k].length(); l++) 
-									{
-										char testChar = stringVector[k][l];
-										string testString = "";
-										testString += testChar;
-										convertToLowerCase(testString);
-										if (charString == testString) 
-											{ count++; }
-									}
-							}
-						if (count % 2 != 0) 
-							{ return false; } // Found an odd count
-					}
-    		}
-    	return true; // All counts are even
-	 }
-	 else //we have an odd number of characters
-	 { 
-		char middle = totalVector[characters/2]; //get the middle character of the entire vector
-		int count = 0;
-		for (int i = 0; i < characters; i++) //compare middle character with all the characters in the vector
-			{
-				if (middle == totalVector[i])
-					{ count++; }
-			}
-		if (count % 2 == 0) //see if middle character appeared an even number of times
-			{ return false; }
 		
-		string noMiddleChar = "";
-		for (int i = 0; i < characters; i++) //create a string of all characters besides middle character
-			{
-				if (totalVector[i] != middle)
-					{ noMiddleChar += totalVector[i]; }
-			}
-		
-		int odds = 0;
-		for (int i = 0; i < noMiddleChar.length(); i++) //see how many times non-middle characters appear
-			{
-				count = 0;
-				char currentChar = noMiddleChar[i];
-				string charString = "";
-				charString += currentChar;
-				convertToLowerCase(charString);
-				for (int j = 0; j < noMiddleChar.length(); j++)
-					{
-						char testChar = noMiddleChar[j];
-						string testString = "";
-						testString += testChar;
-						convertToLowerCase(testString);
-						if (charString == testString)
-							{ count++; }
-					}
-				if (count % 2 != 0)
-					{ odds++; }
-			}
-		if (odds > 0) //if we have a character that isnt the middle character and appears an odd amount of times
-			{ return false; }
-		else
-			{ return true; }
-	 }
+	int count = 0; //amount of times a character repeats
+	int odds = 0; //amount of characters that repeat
+	for (int i = 0; i < totalVector.length()/2; i++)
+		{
+			count = 0;
+			char currentChar = totalVector[i];
+			string currentString = "";
+			currentString += currentChar;
+			convertToLowerCase(currentString);
+			for (int j = 0; j < totalVector.length(); j++)
+				{
+					char testChar = totalVector[j];
+					string testString = "";
+					testString += testChar;
+					convertToLowerCase(testString);
+					if (currentString == testString)
+						{count++;}
+				}
+			if (count % 2 != 0)
+				{
+					odds++;
+					if (odds > 1)
+						{return false;}
+				}
+		}
+	return true; //only one character (the middle character) appears an odd number of times
 }
 
 bool FindPalindrome::cutTest2(const vector<string> & stringVector1,
