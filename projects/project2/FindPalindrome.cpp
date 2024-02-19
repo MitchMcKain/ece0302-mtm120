@@ -24,6 +24,8 @@ static void convertToLowerCase(string & value)
 void FindPalindrome::recursiveFindPalindromes(vector<string>
         candidateStringVector, vector<string> currentStringVector)
 {
+	cutTest2(candidateStringVector, currentStringVector); //see if its even worth for checking for palindromes
+
 	if (currentStringVector.size() == 0)
 	{
 		string pal = "";
@@ -97,36 +99,39 @@ void FindPalindrome::clear()
 
 bool FindPalindrome::cutTest1(const vector<string> & stringVector)
 {
+	//get the entire stringVector into lower case
 	string totalVector = "";
 	for (int i = 0; i < stringVector.size(); i++)
 		{ totalVector += stringVector[i]; }
-		
-	int count = 0; //amount of times a character repeats
-	int odds = 0; //amount of characters that repeat
-	for (int i = 0; i < totalVector.length()/2; i++)
+	convertToLowerCase(totalVector);
+	
+	//create an array of length 26 to store the occurences of each character
+	int characters[26];
+	for (int i = 0; i < 26; i++)
+		{characters[i] = 0;}
+
+	//place the chracters into the array that stores occurences of each character
+	int currentChar;
+	for (int i = 0; i < totalVector.length(); i++)
 		{
-			count = 0;
-			char currentChar = totalVector[i];
-			string currentString = "";
-			currentString += currentChar;
-			convertToLowerCase(currentString);
-			for (int j = 0; j < totalVector.length(); j++)
-				{
-					char testChar = totalVector[j];
-					string testString = "";
-					testString += testChar;
-					convertToLowerCase(testString);
-					if (currentString == testString)
-						{count++;}
-				}
-			if (count % 2 != 0)
-				{
-					odds++;
-					if (odds > 1)
-						{return false;}
-				}
+			currentChar = totalVector[i];
+			characters[currentChar - 97]++;
 		}
-	return true; //only one character (the middle character) appears an odd number of times
+
+	//find out how many odd characters exist in stringVector
+	int odds = 0;
+	for (int i = 0; i < 26; i++)
+	{
+		if (characters[i] %2 != 0)
+			{odds++;}
+	}
+
+	//if there are more than 1 odd character (which should only be the middle character) return false
+	if (odds > 1)
+		{return false;}
+	else
+		{return true;}
+
 }
 
 bool FindPalindrome::cutTest2(const vector<string> & stringVector1,
@@ -197,6 +202,8 @@ bool FindPalindrome::add(const string & value)
 
 	wordCloud.push_back(value);
 	
+	cutTest1(wordCloud); //see if its even worth testing for Palindromes
+
 	vector<string> blank;
 	blank.clear(); //empty vector for candidateStringVector
 	numberOfPalindromes = 0;
@@ -229,6 +236,9 @@ bool FindPalindrome::add(const vector<string> & stringVector)
 	//add all strings from stringVector to wordCloud 
 	wordCloud.push_back(stringVector[i]); 
 	}
+
+	cutTest1(wordCloud); //see if its even worth testing for Palindromes
+
 	vector<string> blank;
 	blank.clear(); //empty vector for candidateStringVector
 	numberOfPalindromes = 0;
@@ -239,4 +249,3 @@ bool FindPalindrome::add(const vector<string> & stringVector)
 
 vector< vector<string> > FindPalindrome::toVector() const
 { return totalPalindromes; }
-

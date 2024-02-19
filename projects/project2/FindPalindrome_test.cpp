@@ -90,7 +90,7 @@ TEST_CASE("Test cutTest1 with perfect even case different capitaliztion")
 	REQUIRE(b.cutTest1(test));
 }
 
-TEST_CASE("Test cutTest1 with even vector and a character appearing odd times" , "[FindPalindrome]")
+TEST_CASE("Test cutTest1 with even vector and multiple characters appearing odd times" , "[FindPalindrome]")
 {
 	FindPalindrome b;
 	std::vector<std::string> test = {"aaab"};
@@ -115,7 +115,7 @@ TEST_CASE("Test cutTest1 with odd vector of middle character appearing even time
 {
 	FindPalindrome b;
 	std::vector<std::string> test = {"aabba"};
-	REQUIRE_FALSE(b.cutTest1(test));
+	REQUIRE(b.cutTest1(test));
 }
 
 TEST_CASE("Test cutTest1 with odd vector of middle character appearing odd times and other character appears odd times", "[FindPalindrome]")
@@ -125,7 +125,7 @@ TEST_CASE("Test cutTest1 with odd vector of middle character appearing odd times
 	REQUIRE_FALSE(b.cutTest1(test));
 }
 
-TEST_CASE("Test cutTest1 with middle character appearing mutiple times" , "[FindPalindrome]")
+TEST_CASE("Test cutTest1 with middle character appearing odd times with multiple strings" , "[FindPalindrome]")
 {
 	FindPalindrome b;
 	std::vector<std::string> test = {"ab", "a", "ba"};
@@ -178,4 +178,32 @@ TEST_CASE("Test cutTest2 with right longer than left invalid" , "[FindPalindrome
 	std::vector<std::string> left = {"baaa"};
 	std::vector<std::string> right = {"caa"};
 	REQUIRE_FALSE(b.cutTest2(left, right));
+}
+
+TEST_CASE("Test toVector() with instructions example", "[FindPalindrome]"){
+	FindPalindrome b;
+
+	REQUIRE(b.add("a"));
+	REQUIRE(b.add("AA"));
+	REQUIRE(b.add("AaA"));
+
+	std::vector< std::vector<std::string> > test = b.toVector();
+	REQUIRE(test[0][0] == "a");
+	REQUIRE(test[0][1] == "AA");
+	REQUIRE(test[0][2] == "AaA");
+	REQUIRE(test[1][0] == "a");
+	REQUIRE(test[1][1] == "AaA");
+	REQUIRE(test[1][2] == "AA");
+	REQUIRE(test[2][0] == "AA");
+	REQUIRE(test[2][1] == "a");
+	REQUIRE(test[2][2] == "AaA");
+	REQUIRE(test[3][0] == "AA");
+	REQUIRE(test[3][1] == "AaA");
+	REQUIRE(test[3][2] == "a");
+	REQUIRE(test[4][0] == "AaA");
+	REQUIRE(test[4][1] == "a");
+	REQUIRE(test[4][2] == "AA");
+	REQUIRE(test[5][0] == "AaA");
+	REQUIRE(test[5][1] == "AA");
+	REQUIRE(test[5][2] == "a");
 }
