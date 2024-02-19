@@ -201,21 +201,28 @@ bool FindPalindrome::cutTest2(const vector<string> & stringVector1,
 			shorter = first;
 			longer = second;
 		}
+
 	int count = 0;
 	for (int i = 0; i < shorter.length(); i++)
 		{
+			count = 0;
 			char currentChar = shorter[i];
-			string currentString = "";
-			currentString += currentChar;
-			convertToLowerCase(currentString);
-			char testChar = longer[longer.length() - i - 1];
-			string testString = "";
-			testString += testChar;
-			convertToLowerCase(testString);
-			if (currentString != testString) //character is not reflected in counter string
-				return false;
+			string charString = "";
+			charString += currentChar;
+			convertToLowerCase(charString);
+			for (int j = 0; j < longer.length(); j++)
+			{
+				char testChar = longer[j];
+				string testString = "";
+				testString += testChar;
+				convertToLowerCase(testString);
+				if (charString == testString)
+					{count++;}
+			}
+			if (count == 0)
+				{return false;}
 		}
-	return true; //all characters are reflected
+	return true;
 }
 
 bool FindPalindrome::add(const string & value)
