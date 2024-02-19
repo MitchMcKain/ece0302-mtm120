@@ -125,7 +125,7 @@ TEST_CASE("Test cutTest1 with odd vector of middle character appearing odd times
 	REQUIRE_FALSE(b.cutTest1(test));
 }
 
-TEST_CASE("Test cutTest2 with even strings" , "[FindPalindrome]")
+TEST_CASE("Test cutTest2 with even strings valid" , "[FindPalindrome]")
 {
 	FindPalindrome b;
 	std::vector<std::string> left = {"aab"};
@@ -133,7 +133,15 @@ TEST_CASE("Test cutTest2 with even strings" , "[FindPalindrome]")
 	REQUIRE(b.cutTest2(left, right));
 }
 
-TEST_CASE("Test cutTest2 with left longer than right" , "[FindPalindrome]")
+TEST_CASE("Test cutTest2 with even strings invalid" , "[FindPalindrome]")
+{
+	FindPalindrome b;
+	std::vector<std::string> left = {"adb"};
+	std::vector<std::string> right = {"baa"};
+	REQUIRE_FALSE(b.cutTest2(left, right));
+}
+
+TEST_CASE("Test cutTest2 with left longer than right valid" , "[FindPalindrome]")
 {
 	FindPalindrome b;
 	std::vector<std::string> left = {"aaa"};
@@ -141,10 +149,26 @@ TEST_CASE("Test cutTest2 with left longer than right" , "[FindPalindrome]")
 	REQUIRE(b.cutTest2(left, right));
 }
 
-TEST_CASE("Test cutTest2 with right longer than left" , "[FindPalindrome]")
+TEST_CASE("Test cutTest2 with left longer than right invalid" , "[FindPalindrome]")
+{
+	FindPalindrome b;
+	std::vector<std::string> left = {"caa"};
+	std::vector<std::string> right = {"baaa"};
+	REQUIRE_FALSE(b.cutTest2(left, right));
+}
+
+TEST_CASE("Test cutTest2 with right longer than left valid" , "[FindPalindrome]")
 {
 	FindPalindrome b;
 	std::vector<std::string> left = {"baaa"};
 	std::vector<std::string> right = {"aaa"};
 	REQUIRE(b.cutTest2(left, right));
+}
+
+TEST_CASE("Test cutTest2 with right longer than left invalid" , "[FindPalindrome]")
+{
+	FindPalindrome b;
+	std::vector<std::string> left = {"baaa"};
+	std::vector<std::string> right = {"caa"};
+	REQUIRE_FALSE(b.cutTest2(left, right));
 }
