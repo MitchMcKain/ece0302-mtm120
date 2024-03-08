@@ -32,6 +32,9 @@ bool XMLParser::parseTokenizedInput()
 // TODO: Implement the clear method here
 void XMLParser::clear()
 {
+	elementNameBag->clear(); // clear the bag
+	parseStack->clear(); // clear the stack
+	tokenizedInputVector.clear(); // clear the vector
 }
 
 vector<TokenStruct> XMLParser::returnTokenizedInput() const
