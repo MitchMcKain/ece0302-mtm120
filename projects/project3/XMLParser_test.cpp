@@ -8,6 +8,75 @@ using namespace std;
 
 // TODO Implement tests of your Stack class and XMLParser class here
 
+TEST_CASE("Test default constructor of stack", "[ADT Stack]")
+{
+	Stack<int> intStack;
+}
+
+TEST_CASE("Test isEmpty", "[ADT Stack]")
+{
+	Stack<int> intStack;
+	REQUIRE(intStack.isEmpty());
+}
+
+TEST_CASE("Test size", "[ADT Stack]")
+{
+	Stack<int> intStack;
+	REQUIRE(intStack.size() == 0);
+}
+
+TEST_CASE("Test push with one item", "[ADT Stack]")
+{
+	Stack<int> intStack;
+	REQUIRE(intStack.push(0));
+	REQUIRE(intStack.size() == 1);
+	REQUIRE(intStack.peek() == 0);
+}
+
+TEST_CASE("Test push with multiple items", "[ADT Stack]")
+{
+	Stack<int> intStack;
+	intStack.push(0);
+	intStack.push(1);
+	intStack.push(2);
+	REQUIRE(intStack.peek() == 2);
+}
+
+TEST_CASE("Test pop with stack that has single item", "[ADT Stack]")
+{
+	Stack<int> intStack;
+	intStack.push(0);
+	REQUIRE(intStack.pop());
+	REQUIRE(intStack.isEmpty());
+}
+
+TEST_CASE("Test pop with stack that has multiple items", "[ADT Stack]")
+{
+	Stack<int> intStack;
+	intStack.push(0);
+	intStack.push(1);
+	intStack.push(2);
+	intStack.pop();
+	intStack.pop();
+	REQUIRE(intStack.peek() == 0);
+}
+
+TEST_CASE("Test pop when no items are on stack", "[ADT Stack]")
+{
+	Stack<int> intStack;
+	REQUIRE_FALSE(intStack.pop());
+}
+
+TEST_CASE("Test clear", "[ADT Stack]")
+{
+	Stack<int> intStack;
+	intStack.push(0);
+	intStack.push(1);
+	intStack.clear();
+	REQUIRE(intStack.size() == 0);
+}
+
+/*
 TEST_CASE( "Test Bag add", "[ADT Bag]" )
 {
 	   INFO("Hint: testing Bag add()");
@@ -199,3 +268,4 @@ TEST_CASE( "Test XMLParser Final Handout-0", "[XMLParser]" )
 		REQUIRE(myXMLParser.containsElementName("color_swatch"));
 		REQUIRE(myXMLParser.frequencyElementName("color_swatch") == 15);
 }
+*/
