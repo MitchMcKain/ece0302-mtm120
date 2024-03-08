@@ -28,7 +28,7 @@ bool Bag<ItemType>::add(const ItemType& newEntry)
 {
 	// Add to beginning of chain: new node references rest of chain;
 	// (headPtr is null if chain is empty)
-	Node<ItemType>* nextNodePtr = new Node<ItemType>(newEntry, headPtr); // alternate code
+	auto nextNodePtr = std::make_shared< Node<ItemType> >(newEntry, headPtr); // alternate code
 
 	headPtr = nextNodePtr;          // New node is now first node
 	itemCount++;
@@ -39,7 +39,7 @@ bool Bag<ItemType>::add(const ItemType& newEntry)
 template<class ItemType>
 void Bag<ItemType>::clear()
 {
-	Node<ItemType>* nodeToDeletePtr = headPtr;
+	auto nodeToDeletePtr = headPtr;
 	while (headPtr != nullptr)
 	{
 		headPtr = headPtr->getNext();
@@ -54,10 +54,10 @@ void Bag<ItemType>::clear()
 }  // end clear
 
 template<class ItemType>
-Node<ItemType>* Bag<ItemType>::getPointerTo(const ItemType& target) const
+std::shared_ptr< Node<ItemType> > Bag<ItemType>::getPointerTo(const ItemType& target) const
 {
 	bool found = false;
-	Node<ItemType>* curPtr = headPtr;
+	auto curPtr = headPtr;
 
 	while (!found && (curPtr != nullptr))
 	{
@@ -81,7 +81,7 @@ int Bag<ItemType>::getFrequencyOf(const ItemType& anEntry) const
 {
 	int frequency = 0;
 	int counter = 0;
-	Node<ItemType>* curPtr = headPtr;
+	auto curPtr = headPtr;
 	while ((curPtr != nullptr) && (counter < itemCount))
 	{
 		if (anEntry == curPtr->getItem())
@@ -100,7 +100,7 @@ template<class ItemType>
 std::vector<ItemType> Bag<ItemType>::toVector() const
 {
 	std::vector<ItemType> bagContents;
-	Node<ItemType>* curPtr = headPtr;
+	auto curPtr = headPtr;
 	int counter = 0;
 	while ((curPtr != nullptr) && (counter < itemCount))
 	{
