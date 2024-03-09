@@ -125,14 +125,70 @@ TEST_CASE("Test constructor", "[XMLParser]")
 	XMLParser myParser;
 }
 
+TEST_CASE("Test tokenizeInputString with an invalid string", "[XMLParser]")
+{
+	XMLParser myParser;
+	string testString = "TestString";
+	REQUIRE_FALSE(myParser.tokenizeInputString(testString));
+}
+
 TEST_CASE("Test tokenizeInputString with a declaration", "[XMLParser]")
 {
 	XMLParser myParser;
 	string testString = "<?Test Declaration?>";
 	REQUIRE(myParser.tokenizeInputString(testString));
+	std::vector<TokenStruct> result = {TokenStruct{StringTokenType::DECLARATION, std::string("Test Declaration")}};
+	std::vector<TokenStruct> output = myParser.returnTokenizedInput();
+	REQUIRE(result.size() == output.size());
+		for (int i = 0; i < result.size(); i++) {
+			REQUIRE(result[i].tokenType == output[i].tokenType);
+			REQUIRE(result[i].tokenString.compare(output[i].tokenString) == 0);
+		}
 }
 
-/*
+
+TEST_CASE("Test tokenizeInputString with a normal empty-tag", "[XMLParser]")
+{
+	XMLParser myParser;
+	string testString = "<TestEmpty-Tag/>";
+	REQUIRE(myParser.tokenizeInputString(testString));
+	std::vector<TokenStruct> result = {TokenStruct{StringTokenType::EMPTY_TAG, std::string("TestEmpty-Tag")}};
+	std::vector<TokenStruct> output = myParser.returnTokenizedInput();
+	REQUIRE(result.size() == output.size());
+		for (int i = 0; i < result.size(); i++) {
+			REQUIRE(result[i].tokenType == output[i].tokenType);
+			REQUIRE(result[i].tokenString.compare(output[i].tokenString) == 0);
+		}
+}
+
+TEST_CASE("Test tokenizeInputString with an end-tag", "[XMLParser]")
+{
+	XMLParser myParser;
+	string testString = "</TestEnd-Tag>";
+	REQUIRE(myParser.tokenizeInputString(testString));
+	std::vector<TokenStruct> result = {TokenStruct{StringTokenType::END_TAG, std::string("TestEnd-Tag")}};
+	std::vector<TokenStruct> output = myParser.returnTokenizedInput();
+	REQUIRE(result.size() == output.size());
+		for (int i = 0; i < result.size(); i++) {
+			REQUIRE(result[i].tokenType == output[i].tokenType);
+			REQUIRE(result[i].tokenString.compare(output[i].tokenString) == 0);
+		}
+}
+
+TEST_CASE("Test tokenizeInputString with a normal start-tag", "[XMLParser]")
+{
+	XMLParser myParser;
+	string testString = "<TestStart-Tag>";
+	REQUIRE(myParser.tokenizeInputString(testString));
+	std::vector<TokenStruct> result = {TokenStruct{StringTokenType::START_TAG, std::string("TestStart-Tag")}};
+	std::vector<TokenStruct> output = myParser.returnTokenizedInput();
+	REQUIRE(result.size() == output.size());
+		for (int i = 0; i < result.size(); i++) {
+			REQUIRE(result[i].tokenType == output[i].tokenType);
+			REQUIRE(result[i].tokenString.compare(output[i].tokenString) == 0);
+		}
+}
+
 TEST_CASE( "Test XMLParser tokenizeInputString", "[XMLParser]" )
 {
 	   INFO("Hint: tokenize single element test of XMLParse");
@@ -144,7 +200,7 @@ TEST_CASE( "Test XMLParser tokenizeInputString", "[XMLParser]" )
 		REQUIRE(success);
 }
 
-
+/*
 TEST_CASE( "Test Stack handout-0", "[XMLParser]" )
 {
 		// Create a Stack to hold ints
