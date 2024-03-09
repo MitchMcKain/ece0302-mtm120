@@ -26,7 +26,7 @@ XMLParser::~XMLParser()
 // TODO: Implement the tokenizeInputString method
 bool XMLParser::tokenizeInputString(const std::string &inputString)
 {
-	tokenizedInputVector.clear(); // clear tokenized vector
+	clear(); // clear everything
 
 	string input = "";
 	for (int i = 0; i < inputString.length(); i++)
@@ -66,7 +66,6 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 					{
 						string declaration = untrimmedTag.substr(2, untrimmedTag.length() - 4);
 						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::DECLARATION, std::string(declaration)});
-						cout << untrimmedTag << "\t" << declaration << endl;
 						untrimmedTag = ""; // allow a new tag to be formed
 						tokenized = true;
 					}
@@ -74,8 +73,6 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 					{
 						string emptyTag = untrimmedTag.substr(1, untrimmedTag.length() - 3);
 						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::EMPTY_TAG, std::string(emptyTag)});
-						cout << untrimmedTag << "\t" << emptyTag << endl;
-
 						untrimmedTag = ""; // allow a new tag to be formed
 						tokenized = true;
 					}
@@ -83,7 +80,6 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 					{
 						string endTag = untrimmedTag.substr(2, untrimmedTag.length() - 3);
 						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::END_TAG, std::string(endTag)});
-						cout << untrimmedTag << "\t" << endTag << endl;
 						untrimmedTag = ""; // allow a new tag to be formed
 						tokenized = true;
 					}
@@ -91,7 +87,6 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 					{
 						string startTag = untrimmedTag.substr(1, untrimmedTag.length() - 2);
 						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::START_TAG, std::string(startTag)});
-						cout << untrimmedTag << "\t" << startTag << endl;
 						untrimmedTag = ""; //allow a new tag to be formed
 						tokenized = true;
 					}
@@ -99,7 +94,6 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 			else if(contentExists == true) // we have content
 				{
 					tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::CONTENT, std::string(untrimmedTag)});
-					cout << untrimmedTag << endl;
 					untrimmedTag = ""; // allow a new tag to be formed
 					contentExists = false; // reset content
 					tokenized = true;
