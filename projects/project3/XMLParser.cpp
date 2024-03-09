@@ -108,7 +108,7 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 			{}
 		}
 
-	return tokenized
+	return tokenized;
 }  // end
 
 // TODO: Implement the parseTokenizedInput method here
