@@ -5,11 +5,13 @@
 
 #include <algorithm>
 #include <cstddef>
+#include "Bag.hpp"
+
 
 template<class ItemType>
 Bag<ItemType>::Bag() : headPtr(nullptr), itemCount(0)
 {
-}  // end default constructor
+}  // end default constructors
 
 template<class ItemType>
 int Bag<ItemType>::size() const
@@ -28,7 +30,7 @@ bool Bag<ItemType>::add(const ItemType& newEntry)
 {
 	// Add to beginning of chain: new node references rest of chain;
 	// (headPtr is null if chain is empty)
-	auto nextNodePtr = std::make_shared< Node<ItemType> >(newEntry, headPtr); // alternate code
+	auto nextNodePtr = std::make_shared< Node<ItemType> >(newEntry, headPtr) ; // alternate code
 
 	headPtr = nextNodePtr;          // New node is now first node
 	itemCount++;
@@ -39,13 +41,13 @@ bool Bag<ItemType>::add(const ItemType& newEntry)
 template<class ItemType>
 void Bag<ItemType>::clear()
 {
-	auto nodeToDeletePtr = headPtr;
+	std::shared_ptr< Node<ItemType> >  nodeToDeletePtr = headPtr;
 	while (headPtr != nullptr)
 	{
 		headPtr = headPtr->getNext();
 		// Return node to the system
 		nodeToDeletePtr->setNext(nullptr);
-		delete nodeToDeletePtr;
+		//no nede to delete because smart ptr
 		nodeToDeletePtr = headPtr;
 	}  // end while
 	// headPtr is nullptr; nodeToDeletePtr is nullptr
@@ -54,10 +56,10 @@ void Bag<ItemType>::clear()
 }  // end clear
 
 template<class ItemType>
-std::shared_ptr< Node<ItemType> > Bag<ItemType>::getPointerTo(const ItemType& target) const
+std::shared_ptr <Node<ItemType>> Bag<ItemType>::getPointerTo(const ItemType& target) const
 {
 	bool found = false;
-	auto curPtr = headPtr;
+	std::shared_ptr< Node<ItemType> > curPtr = headPtr;
 
 	while (!found && (curPtr != nullptr))
 	{
@@ -81,7 +83,7 @@ int Bag<ItemType>::getFrequencyOf(const ItemType& anEntry) const
 {
 	int frequency = 0;
 	int counter = 0;
-	auto curPtr = headPtr;
+	std::shared_ptr< Node<ItemType> > curPtr = headPtr;
 	while ((curPtr != nullptr) && (counter < itemCount))
 	{
 		if (anEntry == curPtr->getItem())
@@ -100,7 +102,7 @@ template<class ItemType>
 std::vector<ItemType> Bag<ItemType>::toVector() const
 {
 	std::vector<ItemType> bagContents;
-	auto curPtr = headPtr;
+	std::shared_ptr< Node<ItemType> > curPtr = headPtr;
 	int counter = 0;
 	while ((curPtr != nullptr) && (counter < itemCount))
 	{

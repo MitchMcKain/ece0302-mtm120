@@ -8,6 +8,8 @@ using namespace std;
 
 // TODO Implement tests of your Stack class and XMLParser class here
 
+
+// Begin Stack Tests
 TEST_CASE("Test default constructor of stack", "[ADT Stack]")
 {
 	Stack<int> intStack;
@@ -76,24 +78,6 @@ TEST_CASE("Test clear", "[ADT Stack]")
 	REQUIRE(intStack.size() == 0);
 }
 
-/*
-TEST_CASE( "Test Bag add", "[ADT Bag]" )
-{
-	   INFO("Hint: testing Bag add()");
-		// Create a Bag to hold ints
-		Bag<int> intBag;
-		int testSize = 2;
-		int bagSize;
-		bool success;
-		for (int i=0; i<testSize; i++) {
-			success = intBag.add(i);
-			REQUIRE(success);
-			bagSize = intBag.size();
-			success = (bagSize == (i+1));
-			REQUIRE(success);
-		}
-}
-
 TEST_CASE( "Test Stack push and size", "[ADT Stack]" )
 {
 	   INFO("Hint: testing Stack push()");
@@ -110,7 +94,45 @@ TEST_CASE( "Test Stack push and size", "[ADT Stack]" )
 			REQUIRE(success);
 		}
 }
+// End Stack Tests
 
+
+
+//Begin Bag Tests
+TEST_CASE( "Test Bag add", "[ADT Bag]" )
+{
+	   INFO("Hint: testing Bag add()");
+		// Create a Bag to hold ints
+		Bag<int> intBag;
+		int testSize = 2;
+		int bagSize;
+		bool success;
+		for (int i=0; i<testSize; i++) {
+			success = intBag.add(i);
+			REQUIRE(success);
+			bagSize = intBag.size();
+			success = (bagSize == (i+1));
+			REQUIRE(success);
+		}
+}
+//End Bag Tests
+
+
+
+//Begin XMLParser Tests
+TEST_CASE("Test constructor", "[XMLParser]")
+{
+	XMLParser myParser;
+}
+
+TEST_CASE("Test tokenizeInputString with a declaration", "[XMLParser]")
+{
+	XMLParser myParser;
+	string testString = "<?Test Declaration?>";
+	REQUIRE(myParser.tokenizeInputString(testString));
+}
+
+/*
 TEST_CASE( "Test XMLParser tokenizeInputString", "[XMLParser]" )
 {
 	   INFO("Hint: tokenize single element test of XMLParse");

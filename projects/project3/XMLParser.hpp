@@ -23,14 +23,14 @@ class XMLParser
 {
 private:
 	/** Bag to store the XML element names. Uses the book's Bag implementation. */
-	Bag<std::string>* elementNameBag;
+	Bag<std::string>* elementNameBag = nullptr;
+
 	/** Stack to store XML tag names while parsing. Uses your stack implementation. */
-	Stack<std::string>* parseStack;
+	Stack<std::string>* parseStack = nullptr;
+
 	/** Vector to store the tokenized input string and the token types */
 	std::vector<TokenStruct> tokenizedInputVector;
   
-  // You can add or change the private fields.
-
 public:
 	/** The class constructor.
 		@post  Creates an instance of the class that can be used to tokenize and parse an input string . */
@@ -94,7 +94,7 @@ public:
 	/** Clears the internal data structures for a instance of the class.
 	    @post  The class instance can be used to tokenize a new input string. */
 	void clear();
-	
+
 	/** The class destructor. Must free all allocated memory. */
 	~XMLParser();
 }; // end XMLParser
