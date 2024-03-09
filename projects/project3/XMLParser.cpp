@@ -88,8 +88,11 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 						untrimmedTag = ""; //allow a new tag to be formed
 						token = true;
 					}
-				else // we have content
+				else // we have content 
 					{
+						/********************************
+						 * this isnt working as intended
+						 *******************************/
 						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::CONTENT, std::string(untrimmedTag)});
 						cout << untrimmedTag << endl;
 						untrimmedTag = "";

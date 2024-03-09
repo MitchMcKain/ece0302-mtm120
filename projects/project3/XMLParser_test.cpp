@@ -8,7 +8,7 @@ using namespace std;
 
 // TODO Implement tests of your Stack class and XMLParser class here
 
-
+/*
 // Begin Stack Tests
 TEST_CASE("Test default constructor of stack", "[ADT Stack]")
 {
@@ -189,7 +189,7 @@ TEST_CASE("Test tokenizeInputString with a normal start-tag", "[XMLParser]")
 		}
 }
 
-TEST_CASE( "Test XMLParser tokenizeInputString", "[XMLParser]" )
+TEST_CASE("Test XMLParser tokenizeInputString", "[XMLParser]" )
 {
 	   INFO("Hint: tokenize single element test of XMLParse");
 		// Create an instance of XMLParse
@@ -199,7 +199,22 @@ TEST_CASE( "Test XMLParser tokenizeInputString", "[XMLParser]" )
 		success = myXMLParser.tokenizeInputString(testString);
 		REQUIRE(success);
 }
-
+*/
+TEST_CASE("Test tokenizeInputString with a start-tag, content, and end-tag", "[XMLParser]")
+{
+	XMLParser myParser;
+	string testString = "<startTag>content</endTag>";
+	REQUIRE(myParser.tokenizeInputString(testString));
+	std::vector<TokenStruct> result = {TokenStruct{StringTokenType::START_TAG, std::string("startTag")},
+										TokenStruct{StringTokenType::CONTENT, std::string("content")},
+										TokenStruct{StringTokenType::END_TAG, std::string("endTag")}};
+	std::vector<TokenStruct> output = myParser.returnTokenizedInput();
+	REQUIRE(result.size() == output.size());
+	for (int i = 0; i < result.size(); i++) {
+		REQUIRE(result[i].tokenType == output[i].tokenType);
+		REQUIRE(result[i].tokenString.compare(output[i].tokenString) == 0);
+	}
+}
 /*
 TEST_CASE( "Test Stack handout-0", "[XMLParser]" )
 {
