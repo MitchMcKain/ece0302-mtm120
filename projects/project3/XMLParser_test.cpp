@@ -8,7 +8,7 @@ using namespace std;
 
 // TODO Implement tests of your Stack class and XMLParser class here
 
-/*
+
 // Begin Stack Tests
 TEST_CASE("Test default constructor of stack", "[ADT Stack]")
 {
@@ -199,7 +199,7 @@ TEST_CASE("Test XMLParser tokenizeInputString", "[XMLParser]" )
 		success = myXMLParser.tokenizeInputString(testString);
 		REQUIRE(success);
 }
-*/
+
 TEST_CASE("Test tokenizeInputString with a start-tag, content, and end-tag", "[XMLParser]")
 {
 	XMLParser myParser;
