@@ -12,6 +12,8 @@ XMLParser::XMLParser()
 {
 	elementNameBag = new Bag<std::string>;
 	parseStack = new Stack<std::string>;
+	tokenized = false;
+	parsed = false;
 }  // end default constructor
 
 // TODO: Implement the destructor here
@@ -36,8 +38,8 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 		{ return false; }
 	
 	string untrimmedTag = "";
-	bool tagExists = false;
-	bool token = false;
+	bool tagExists = false; // if we have a successful tag
+	bool contentExists = false; // if we have successful content
 	char currentChar;
 	for (int i = 0; i < input.length(); i++)
 		{
@@ -47,12 +49,17 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 					untrimmedTag += currentChar;
 					tagExists = true;	
 				}
+			else if (untrimmedTag[0] != '<' && input[i + 1] == '<') // we have the end of content
+				{
+					untrimmedTag += currentChar;
+					contentExists = true;
+				}
 			else
 				{
 					untrimmedTag += currentChar;
 					tagExists = false;
 				}
-
+			
 			if (tagExists == true) // find out what type of tag we have
 			{
 				if (untrimmedTag[1] == '?' && untrimmedTag[untrimmedTag.length() - 2] == '?') // we have a declaration
@@ -61,7 +68,7 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::DECLARATION, std::string(declaration)});
 						cout << untrimmedTag << "\t" << declaration << endl;
 						untrimmedTag = ""; // allow a new tag to be formed
-						token = true;
+						tokenized = true;
 					}
 				else if (untrimmedTag[1] != '/' && untrimmedTag[untrimmedTag.length() - 2] == '/') // we have an empty-tag
 					{
@@ -70,7 +77,7 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 						cout << untrimmedTag << "\t" << emptyTag << endl;
 
 						untrimmedTag = ""; // allow a new tag to be formed
-						token = true;
+						tokenized = true;
 					}
 				else if(untrimmedTag[1] == '/' && untrimmedTag[untrimmedTag.length() - 2 != '/']) // we have an end tag
 					{
@@ -78,30 +85,30 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::END_TAG, std::string(endTag)});
 						cout << untrimmedTag << "\t" << endTag << endl;
 						untrimmedTag = ""; // allow a new tag to be formed
-						token = true;
+						tokenized = true;
 					}
-				else if(untrimmedTag[1] != '/' && untrimmedTag[untrimmedTag.length() - 2 != '/']) // we have a start tag
+				else // we have a start tag 
 					{
 						string startTag = untrimmedTag.substr(1, untrimmedTag.length() - 2);
 						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::START_TAG, std::string(startTag)});
 						cout << untrimmedTag << "\t" << startTag << endl;
 						untrimmedTag = ""; //allow a new tag to be formed
-						token = true;
-					}
-				else // we have content 
-					{
-						/********************************
-						 * this isnt working as intended
-						 *******************************/
-						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::CONTENT, std::string(untrimmedTag)});
-						cout << untrimmedTag << endl;
-						untrimmedTag = "";
-						token = true;
+						tokenized = true;
 					}
 			}
+			else if(contentExists == true) // we have content
+				{
+					tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::CONTENT, std::string(untrimmedTag)});
+					cout << untrimmedTag << endl;
+					untrimmedTag = ""; // allow a new tag to be formed
+					contentExists = false; // reset content
+					tokenized = true;
+				}
+			else // we do not have content or a complete tag yet
+			{}
 		}
 
-	return token;
+	return tokenized
 }  // end
 
 // TODO: Implement the parseTokenizedInput method here
@@ -119,19 +126,42 @@ void XMLParser::clear()
 }
 
 vector<TokenStruct> XMLParser::returnTokenizedInput() const
-{
-	return tokenizedInputVector;
-}
+{ return tokenizedInputVector; }
 
 // TODO: Implement the containsElementName method
 bool XMLParser::containsElementName(const std::string &inputString) const
 {
-	return false;
+	if (tokenized == false || parsed == false)
+		{
+			throw(std::logic_error("We do not have a valid XML string"));
+			return false;
+		}
+	
+	string input = "";
+	for (int i = 0; i < inputString.length(); i++)
+		{ input += inputString[i]; }
+
+	if (elementNameBag->contains(input))
+		{ return true; }
+	else
+		{ return false; }
 }
 
 // TODO: Implement the frequencyElementName method
 int XMLParser::frequencyElementName(const std::string &inputString) const
 {
-	return -1;
+	if (tokenized == false || parsed == false)
+		{
+			throw(std::logic_error("We do not have a valid XML string"));
+			return false;
+		}
+
+	string input = "";
+	for (int i = 0; i < inputString.length(); i++)
+		{ input += inputString[i]; }
+
+	int count = elementNameBag->getFrequencyOf(input);
+
+	return count;
 }
 
