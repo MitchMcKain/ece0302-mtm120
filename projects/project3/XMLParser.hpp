@@ -36,6 +36,7 @@ private:
 
 	/* Bool that indicates if a parse was successful*/
 	bool parsed;
+	
 public:
 	/** The class constructor.
 		@post  Creates an instance of the class that can be used to tokenize and parse an input string . */
