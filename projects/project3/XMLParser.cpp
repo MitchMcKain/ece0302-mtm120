@@ -7,6 +7,54 @@
 #include <assert.h>
 #include "XMLParser.hpp"
 
+// isValid determines if a tag name has invalid syntax
+static bool isValid(std::string &inputString)
+{
+	string invalids = " !#$%&'()*+,/;<=>?@[\]^{|}~";
+	char currentChar;
+	for (int i = 0; i < inputString.length(); i++) // if tag name includes an invald character
+		{
+			for (int j = 0; j < invalids.length(); j++)
+				{
+					currentChar = inputString[i];
+					if (currentChar == invalids[j])
+						{ return false; }
+				}
+		}
+		
+	invalids = "-.0123456789";
+	char firstChar = inputString[0];
+	for (int i = 0; i < invalids.length(); i++) // if tage name starts with an invalid character
+		{
+			if (firstChar == invalids[i])
+				{ return false;}
+		}
+	
+	return true; // tag name has valid syntax
+}
+
+// getElmentName extracts the element name from tag in the event it has attributes
+static std::string getTagName(std::string &inputString)
+{
+	string input = "";
+	for (int i = 0; i < inputString.length(); i++)
+		{ input += inputString[i]; }
+
+	string tagName = "";
+	for (int i = 0; i < input.length(); i++)
+		{
+			if (input[i+1] == ' ')
+				{
+					tagName += input[i];
+					break;
+				}
+			else
+				{ tagName += input[i]; }
+		}
+
+	return tagName;
+}
+
 // TODO: Implement the constructor here
 XMLParser::XMLParser()
 {
@@ -33,6 +81,11 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 		{ input += inputString[i]; }
 	//input is now inputString
 
+	if (input == "") // if we have a blank input, we have nothing to tokenize
+		{
+			tokenized = false;
+			return tokenized;
+		}
 	//if inputString does not begin with "<" and end with ">", a tag will be invalid
 	if (input[0] != '<' && input[input.length() - 1] != '>')
 		{ return false; }
@@ -66,17 +119,27 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 					{
 						string declaration = untrimmedTag.substr(2, untrimmedTag.length() - 4);
 						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::DECLARATION, std::string(declaration)});
-						untrimmedTag = ""; // allow a new tag to be formed
+						cout << "delcaration: " << declaration << endl;
+						// allow new tag formation //
+						untrimmedTag = "";
+						tagExists = false;
+						/***************************/
 						tokenized = true;
 					}
 				else if (untrimmedTag[1] != '/' && untrimmedTag[untrimmedTag.length() - 2] == '/') // we have an empty-tag
 					{
 						string emptyTag = untrimmedTag.substr(1, untrimmedTag.length() - 3);
-						tokenized = isValid(emptyTag);
+						string tagName = getTagName(emptyTag);
+						tokenized = isValid(tagName);
 						if (tokenized == false)
 							{ return false; }
-						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::EMPTY_TAG, std::string(emptyTag)});
-						untrimmedTag = ""; // allow a new tag to be formed
+						elementNameBag->add(tagName);
+						cout << "empty-tag: " << tagName << endl;
+						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::EMPTY_TAG, std::string(tagName)});
+						// allow new tag formation //
+						untrimmedTag = "";
+						tagExists = false;
+						/***************************/
 					}
 				else if(untrimmedTag[1] == '/' && untrimmedTag[untrimmedTag.length() - 2 != '/']) // we have an end tag
 					{
@@ -84,29 +147,42 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 						tokenized = isValid(endTag);
 						if (tokenized == false)
 							{ return false; }
+						cout << "end-tag: " << endTag << endl;
 						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::END_TAG, std::string(endTag)});
-						untrimmedTag = ""; // allow a new tag to be formed
+						// allow new tag formation //
+						untrimmedTag = "";
+						tagExists = false;
+						/***************************/
 					}
 				else // we have a start tag 
 					{
 						string startTag = untrimmedTag.substr(1, untrimmedTag.length() - 2);
-						tokenized = isValid(startTag);
+						string tagName = getTagName(startTag);
+						tokenized = isValid(tagName);
 						if (tokenized == false)
 							{ return false; }
-						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::START_TAG, std::string(startTag)});
-						untrimmedTag = ""; //allow a new tag to be formed
-						tokenized = true;
+						elementNameBag->add(tagName);
+						cout << "start-tag: " << tagName << endl;
+						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::START_TAG, std::string(tagName)});
+						// allow new tag formation //
+						untrimmedTag = "";
+						tagExists = false;
+						/***************************/
 					}
 			}
 			else if(contentExists == true) // we have content
 				{
 					tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::CONTENT, std::string(untrimmedTag)});
+					cout << "content: " << untrimmedTag << endl;
 					untrimmedTag = ""; // allow a new tag to be formed
 					contentExists = false; // reset content
 					tokenized = true;
 				}
 			else // we do not have content or a complete tag yet
-			{}
+				{
+					contentExists = false;
+					tagExists = false;
+				}
 		}
 
 	return tokenized;
@@ -116,25 +192,28 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 bool XMLParser::parseTokenizedInput()
 {
 	if (tokenizedInputVector.size() == 0) // if tokenizedInputVector is empty, we have nothing to parse
-		{ return false; }
+		{ parsed = false; }
+	else
+	{
+		for (int i = 0; i < tokenizedInputVector.size(); i++)
+			{
+				if (tokenizedInputVector[i].tokenType == START_TAG)
+					{ parseStack->push(tokenizedInputVector[i].tokenString); } // push a start tag onto the stack
 
-	for (int i = 0; i < tokenizedInputVector.size(); i++)
-		{
-			if (tokenizedInputVector[i].tokenType == START_TAG)
-				{ parseStack->push(tokenizedInputVector[i].tokenString); } // push a start tag onto the stack
+				if (tokenizedInputVector[i].tokenType == END_TAG)
+					{
+						if (parseStack->isEmpty()) // we have an end-tag before a start-tag
+							{ return false; }
+						else if (tokenizedInputVector[i].tokenString == parseStack->peek())
+							{ parseStack->pop(); } // we have a matching tag set
+						else
+							{ return false; } // end-tag does not correspond with its start-tag; we have invalid XML
+					}
+			}
+		parsed = true;
+	}
 
-			if (tokenizedInputVector[i].tokenType == END_TAG)
-				{
-					if (parseStack->isEmpty()) // we have an end-tag before a start-tag
-						{ return false; }
-					else if (tokenizedInputVector[i].tokenString == parseStack->peek())
-						{ parseStack->pop(); } // we have a matching tag set
-					else
-						{ return false; } // end-tag does not correspond with its start-tag; we have invalid XML
-				}
-		}
-	
-	return true;
+	return parsed;
 }
 
 // TODO: Implement the clear method here
@@ -184,28 +263,3 @@ int XMLParser::frequencyElementName(const std::string &inputString) const
 
 	return count;
 }
-
-bool XMLParser::isValid(std::string &inputString)
-{
-		string invalids = " !#$%&'()*+,/;<=>?@[\]^{|}~";
-		char currentChar;
-		for (int i = 0; i < inputString.length(); i++) // if tag name includes an invald character
-			{
-				for (int j = 0; j < invalids.length(); j++)
-					{
-						currentChar = inputString[i];
-						if (currentChar == invalids[j])
-							{ return false; }
-					}
-			}
-		
-		invalids = "-.0123456789";
-		char firstChar = inputString[0];
-		for (int i = 0; i < invalids.length(); i++) // if tage name starts with an invalid character
-			{
-				if (firstChar == invalids[i])
-					{ return false;}
-			}
-
-		return true; // tag name has valid syntax
-	}

@@ -103,9 +103,6 @@ public:
 
 	/** The class destructor. Must free all allocated memory. */
 	~XMLParser();
-
-	/* Helper function to determine if a token includes an invalid character*/
-	bool isValid(std::string &inputString);
 }; // end XMLParser
 
 #endif
