@@ -72,20 +72,27 @@ bool XMLParser::tokenizeInputString(const std::string &inputString)
 				else if (untrimmedTag[1] != '/' && untrimmedTag[untrimmedTag.length() - 2] == '/') // we have an empty-tag
 					{
 						string emptyTag = untrimmedTag.substr(1, untrimmedTag.length() - 3);
+						tokenized = isValid(emptyTag);
+						if (tokenized == false)
+							{ return false; }
 						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::EMPTY_TAG, std::string(emptyTag)});
 						untrimmedTag = ""; // allow a new tag to be formed
-						tokenized = true;
 					}
 				else if(untrimmedTag[1] == '/' && untrimmedTag[untrimmedTag.length() - 2 != '/']) // we have an end tag
 					{
 						string endTag = untrimmedTag.substr(2, untrimmedTag.length() - 3);
+						tokenized = isValid(endTag);
+						if (tokenized == false)
+							{ return false; }
 						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::END_TAG, std::string(endTag)});
 						untrimmedTag = ""; // allow a new tag to be formed
-						tokenized = true;
 					}
 				else // we have a start tag 
 					{
 						string startTag = untrimmedTag.substr(1, untrimmedTag.length() - 2);
+						tokenized = isValid(startTag);
+						if (tokenized == false)
+							{ return false; }
 						tokenizedInputVector.push_back(_TokenStruct_{StringTokenType::START_TAG, std::string(startTag)});
 						untrimmedTag = ""; //allow a new tag to be formed
 						tokenized = true;
@@ -110,6 +117,24 @@ bool XMLParser::parseTokenizedInput()
 {
 	if (tokenizedInputVector.size() == 0) // if tokenizedInputVector is empty, we have nothing to parse
 		{ return false; }
+
+	for (int i = 0; i < tokenizedInputVector.size(); i++)
+		{
+			if (tokenizedInputVector[i].tokenType == START_TAG)
+				{ parseStack->push(tokenizedInputVector[i].tokenString); } // push a start tag onto the stack
+
+			if (tokenizedInputVector[i].tokenType == END_TAG)
+				{
+					if (parseStack->isEmpty()) // we have an end-tag before a start-tag
+						{ return false; }
+					else if (tokenizedInputVector[i].tokenString == parseStack->peek())
+						{ parseStack->pop(); } // we have a matching tag set
+					else
+						{ return false; } // end-tag does not correspond with its start-tag; we have invalid XML
+				}
+		}
+	
+	return true;
 }
 
 // TODO: Implement the clear method here
@@ -160,3 +185,27 @@ int XMLParser::frequencyElementName(const std::string &inputString) const
 	return count;
 }
 
+bool XMLParser::isValid(std::string &inputString)
+{
+		string invalids = " !#$%&'()*+,/;<=>?@[\]^{|}~";
+		char currentChar;
+		for (int i = 0; i < inputString.length(); i++) // if tag name includes an invald character
+			{
+				for (int j = 0; j < invalids.length(); j++)
+					{
+						currentChar = inputString[i];
+						if (currentChar == invalids[j])
+							{ return false; }
+					}
+			}
+		
+		invalids = "-.0123456789";
+		char firstChar = inputString[0];
+		for (int i = 0; i < invalids.length(); i++) // if tage name starts with an invalid character
+			{
+				if (firstChar == invalids[i])
+					{ return false;}
+			}
+
+		return true; // tag name has valid syntax
+	}
