@@ -215,6 +215,37 @@ TEST_CASE("Test tokenizeInputString with a start-tag, content, and end-tag", "[X
 		REQUIRE(result[i].tokenString.compare(output[i].tokenString) == 0);
 	}
 }
+
+TEST_CASE("Test tokenizeInputString with an invalid end tag", "[XMLParser]")
+{
+	XMLParser myParser;
+	string testString = "<test>stuff</test/>";
+	REQUIRE_FALSE(myParser.tokenizeInputString(testString));
+}
+
+TEST_CASE("Test parseTokenizedInput with an empty vector", "[XMLParser]")
+{
+	XMLParser myParser;
+	myParser.clear();
+	REQUIRE_FALSE(myParser.parseTokenizedInput());
+}
+
+TEST_CASE("Test parseTokenizedInput with valid tokenized vector", "[XMLParser]")
+{
+	XMLParser myParser;
+	string testString = "<test>stuff</test>";
+	REQUIRE(myParser.tokenizeInputString(testString));
+	REQUIRE(myParser.parseTokenizedInput());
+}
+
+TEST_CASE("Test parseTokenizedInput with valid tokenized vector, but invalid for parsing", "[XMLParser]")
+{
+	XMLParser myParser;
+	string testString = "</test>stuff<test>";
+	REQUIRE(myParser.tokenizeInputString(testString));
+	REQUIRE_FALSE(myParser.parseTokenizedInput());
+}
+
 /*
 TEST_CASE( "Test Stack handout-0", "[XMLParser]" )
 {
@@ -281,7 +312,6 @@ TEST_CASE( "Test XMLParser tokenizeInputString Handout-0", "[XMLParser]" )
 			REQUIRE(result[i].tokenString.compare(output[i].tokenString) == 0);
 		}
 }
-
 
 // You can assume that the beginning and the end of CONTENT will not be filled with whitespace
 TEST_CASE( "Test XMLParser tokenizeInputString Handout-1", "[XMLParser]" )
