@@ -50,6 +50,8 @@ bool Stack<ItemType>::push(const ItemType& newItem)
 template<class ItemType>
 ItemType Stack<ItemType>::peek() const
 {
+	if (isEmpty())
+		{ throw(std::logic_error("The stack is empty, therefore we have nothing to peak")); }
 	ItemType returnItem;
 	returnItem = headPtr->getItem(); //set returnItem to node on top of stack
 	return returnItem;
