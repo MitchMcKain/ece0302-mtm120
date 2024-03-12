@@ -7,7 +7,6 @@
 using namespace std;
 
 // TODO Implement tests of your Stack class and XMLParser class here
-/*
 
 // Begin Stack Tests
 TEST_CASE("Test default constructor of stack", "[ADT Stack]")
@@ -125,11 +124,29 @@ TEST_CASE("Test constructor", "[XMLParser]")
 	XMLParser myParser;
 }
 
-TEST_CASE("Test tokenizeInputString with an invalid string", "[XMLParser]")
+TEST_CASE("Test tokenizeInputString with a normal string (content)", "[XMLParser]")
 {
 	XMLParser myParser;
 	string testString = "TestString";
-	REQUIRE_FALSE(myParser.tokenizeInputString(testString));
+	REQUIRE(myParser.tokenizeInputString(testString));
+}
+
+TEST_CASE("Test tokenizeInputString with all whitespace", "[XMLParser]")
+{
+	XMLParser myParser;
+	REQUIRE( !myParser.tokenizeInputString(" \n"));
+}
+
+TEST_CASE ("Test tokenizeInputString with an unpaired angle bracket", "[XMLParser]")
+{
+	XMLParser myParser;
+	REQUIRE( !myParser.tokenizeInputString(" \n <"));
+}
+
+TEST_CASE("Test tokenizeInputString with <>", "[XMLParser]")
+{
+	XMLParser myParser;
+	REQUIRE( !myParser.tokenizeInputString(" \n <>"));
 }
 
 TEST_CASE("Test tokenizeInputString with a declaration", "[XMLParser]")
@@ -145,7 +162,6 @@ TEST_CASE("Test tokenizeInputString with a declaration", "[XMLParser]")
 			REQUIRE(result[i].tokenString.compare(output[i].tokenString) == 0);
 		}
 }
-
 
 TEST_CASE("Test tokenizeInputString with a normal empty-tag", "[XMLParser]")
 {
@@ -272,6 +288,12 @@ TEST_CASE("Test tokenizeInputString with an invalid end tag", "[XMLParser]")
 	REQUIRE_FALSE(myParser.tokenizeInputString(testString));
 }
 
+TEST_CASE("Test tokenizeInputString with a tag inside of a tag", "[XMLParser]")
+{
+	XMLParser myParser;
+	REQUIRE( !myParser.tokenizeInputString("<tag1 <anothertag>>content</tag1>"));
+}
+
 TEST_CASE("Test parseTokenizedInput with an empty vector", "[XMLParser]")
 {
 	XMLParser myParser;
@@ -295,6 +317,26 @@ TEST_CASE("Test parseTokenizedInput with valid tokenized vector, but invalid for
 	REQUIRE_FALSE(myParser.parseTokenizedInput());
 }
 
+TEST_CASE("Test parseTokenizedInput with just an empty-tag", "[XMLParser]")
+{
+	XMLParser myParser;
+	REQUIRE(myParser.tokenizeInputString("<empty/>"));
+	REQUIRE( !myParser.parseTokenizedInput());
+}
+
+TEST_CASE("Test parseTokenizedInput when tokenizedInputString didn't pass", "[XMLParser]")
+{
+	XMLParser myParser;
+	REQUIRE( !myParser.tokenizeInputString("\n</tag unicode=\"uint8\"/>"));
+	REQUIRE( !myParser.parseTokenizedInput() );
+}
+
+TEST_CASE("Test autograder case", "[XMLParser]")
+{
+	XMLParser myParser;
+	REQUIRE(myParser.tokenizeInputString("<?xml?><head>sometext</head><body>sometext</body>"));
+	REQUIRE(!myParser.parseTokenizedInput());
+}
 
 TEST_CASE("Test containsElementName where tokenized didn't pass")
 {
@@ -325,7 +367,7 @@ TEST_CASE("Test containsElementName where tokenized and parsing have passed")
 TEST_CASE("Test frequencyElementName where tokenized didn't pass", "[XMLParser]")
 {
 	XMLParser myParser;
-	string testString = "test";
+	string testString = "<test";
 	REQUIRE_FALSE(myParser.tokenizeInputString(testString));
 	REQUIRE_THROWS(myParser.frequencyElementName("test"));
 }
@@ -422,7 +464,7 @@ TEST_CASE( "Test XMLParser tokenizeInputString Handout-0", "[XMLParser]" )
 			REQUIRE(result[i].tokenString.compare(output[i].tokenString) == 0);
 		}
 }
-*/
+
 // You can assume that the beginning and the end of CONTENT will not be filled with whitespace
 TEST_CASE( "Test XMLParser tokenizeInputString Handout-1", "[XMLParser]" )
 {
@@ -450,7 +492,6 @@ TEST_CASE( "Test XMLParser tokenizeInputString Handout-1", "[XMLParser]" )
 		}
 }
 
-/*
 TEST_CASE( "Test XMLParser parseTokenizedInput Handout-0", "[XMLParser]" )
 {
 	   INFO("Hint: tokenize single element test of XMLParse");
@@ -502,4 +543,3 @@ TEST_CASE( "Test XMLParser Final Handout-0", "[XMLParser]" )
 		REQUIRE(myXMLParser.containsElementName("color_swatch"));
 		REQUIRE(myXMLParser.frequencyElementName("color_swatch") == 15);
 }
-*/
