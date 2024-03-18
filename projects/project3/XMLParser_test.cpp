@@ -519,27 +519,27 @@ TEST_CASE( "Test XMLParser parseTokenizedInput Handout-0", "[XMLParser]" )
 
 TEST_CASE( "Test XMLParser Final Handout-0", "[XMLParser]" )
 {
-	   INFO("Hint: TestFile");
-		// Create an instance of XMLParse
-		XMLParser myXMLParser;
-		ifstream myfile ("./TestFile.txt");
-		std::string inputString((std::istreambuf_iterator<char>(myfile) ), (std::istreambuf_iterator<char>()) );
+       INFO("Hint: TestFile");
+        // Create an instance of XMLParse
+        XMLParser myXMLParser;
+        ifstream myfile ("./TestFile.txt");
+        std::string inputString((std::istreambuf_iterator<char>(myfile) ), (std::istreambuf_iterator<char>()) );
 
-		bool success;
-		success = myXMLParser.tokenizeInputString(inputString);
-		REQUIRE(success);
-		success = myXMLParser.parseTokenizedInput();
-		REQUIRE(success);
-		REQUIRE(myXMLParser.containsElementName("catalog"));
-		REQUIRE(myXMLParser.frequencyElementName("catalog") == 1);
-		REQUIRE(myXMLParser.containsElementName("product"));
-		REQUIRE(myXMLParser.frequencyElementName("product") == 1);
-		REQUIRE(myXMLParser.containsElementName("catalog_item"));
-		REQUIRE(myXMLParser.frequencyElementName("catalog_item") == 2);
-		REQUIRE(myXMLParser.containsElementName("item_number"));
-		REQUIRE(myXMLParser.frequencyElementName("item_number") == 2);
-		REQUIRE(myXMLParser.containsElementName("size"));
-		REQUIRE(myXMLParser.frequencyElementName("size") == 6);
-		REQUIRE(myXMLParser.containsElementName("color_swatch"));
-		REQUIRE(myXMLParser.frequencyElementName("color_swatch") == 15);
+        bool success;
+        success = myXMLParser.tokenizeInputString(inputString);
+        REQUIRE(success);
+        success = myXMLParser.parseTokenizedInput();
+        REQUIRE(success);
+        REQUIRE(myXMLParser.containsElementName("catalog"));
+        REQUIRE(myXMLParser.frequencyElementName("catalog") == 1);
+        REQUIRE(myXMLParser.containsElementName("product"));
+        REQUIRE(myXMLParser.frequencyElementName("product") == 1);
+        REQUIRE(myXMLParser.containsElementName("catalog_item"));
+        REQUIRE(myXMLParser.frequencyElementName("catalog_item") == 2);
+        REQUIRE(myXMLParser.containsElementName("item_number"));
+        REQUIRE(myXMLParser.frequencyElementName("item_number") == 2);
+        REQUIRE(myXMLParser.containsElementName("size"));
+        REQUIRE(myXMLParser.frequencyElementName("size") == 6);
+        REQUIRE(myXMLParser.containsElementName("color_swatch"));
+        REQUIRE(myXMLParser.frequencyElementName("color_swatch") == 15);
 }

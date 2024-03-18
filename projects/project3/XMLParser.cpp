@@ -236,7 +236,20 @@ bool XMLParser::parseTokenizedInput()
 		}	
 
 	if (tokenizedInputVector.size() == 0) // if tokenizedInputVector is empty, we have nothing to parse
-		{ parsed = false; }
+		{ 
+			parsed = false;
+			return parsed; 
+		}
+	
+	// we need to test for case if we have incorrectly nested start and end-tags that passes tokenize
+	int i = 0;
+	while((tokenizedInputVector[i].tokenType != START_TAG) && (i < tokenizedInputVector.size()))
+		{ i++; }
+	if ((tokenizedInputVector[i].tokenString != tokenizedInputVector[tokenizedInputVector.size() - 1].tokenString) && (tokenizedInputVector.size() != 1))
+		{
+			parsed = false;
+			return parsed;
+		}
 
 	for (int i = 0; i < tokenizedInputVector.size(); i++)
 		{
