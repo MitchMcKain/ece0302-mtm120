@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.5)
 project(sorted_linked CXX)
 
 # require a C++11 compiler for all targets

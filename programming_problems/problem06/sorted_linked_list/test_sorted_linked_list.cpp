@@ -8,6 +8,29 @@ typedef SortedLinkedList<char> ListType;
 
 template class SortedLinkedList<int>;
 
+//Tests for Sorted Linked List
+TEST_CASE("Test default constructor", "[sorted linked list]")
+{
+  ListType lst;
+  REQUIRE(lst.getLength() == 0);
+}
+
+TEST_CASE("Test alternate constrcutor", "[sorted linked list]")
+{
+  LinkedList<char> unsorted;
+  unsorted.insert(0, 'd');
+  unsorted.insert(1, 'c');
+  unsorted.insert(2, 'b');
+  unsorted.insert(3, 'a');
+  REQUIRE(unsorted.getLength() == 4);
+
+  ListType sorted(unsorted);
+  REQUIRE(sorted.getEntry(0) == 'a');
+  REQUIRE(sorted.getEntry(1) == 'b');
+  REQUIRE(sorted.getEntry(2) == 'c');
+  REQUIRE(sorted.getEntry(3) == 'd');
+}
+
 TEST_CASE("Testing isEmpty", "[sorted linked list]") {
   ListType lst;
   REQUIRE(lst.isEmpty());

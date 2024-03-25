@@ -52,8 +52,6 @@ public:
 
 private:
 
-  // TODO
-
 };
 
 #include "sorted_linked_list.tpp"

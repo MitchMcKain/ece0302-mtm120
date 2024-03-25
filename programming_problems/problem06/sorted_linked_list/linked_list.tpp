@@ -69,8 +69,8 @@ std::size_t LinkedList<T>::getLength() const noexcept
 template <typename T>
 void LinkedList<T>::insert(std::size_t position, const T& item)
 {
-  if (position < 0 || position >= itemCount)
-    { throw(std::logic_error("Index is out of range")); } //throw error
+  if (position < 0 || position > itemCount)
+    { throw(std::range_error("Index is out of range")); } //throw error
 
   else if (position == 0) //inserting at the beginning
     {
@@ -88,17 +88,17 @@ void LinkedList<T>::insert(std::size_t position, const T& item)
     }
 
     itemCount++;
-    return true;
+    return;
 }
 
 template <typename T>
 void LinkedList<T>::remove(std::size_t position)
 {
   if (position < 0 || position >= itemCount)
-    { throw(std::logic_error("Index is out of range")); } //throw error
+    { throw(std::range_error("Index is out of range")); } //throw error
 
   if (itemCount == 0)
-    { throw(std::logic_error("List is empty")); } //throw error
+    { throw(std::range_error("List is empty")); } //throw error
 
   else if (position == 0)
     {
@@ -118,7 +118,7 @@ void LinkedList<T>::remove(std::size_t position)
     }
 
     itemCount--;
-    return true;
+    return;
 }
 
 template <typename T>
@@ -141,10 +141,10 @@ template <typename T>
 T LinkedList<T>::getEntry(std::size_t position) const
 {
   if (position < 0 || position >= itemCount)
-    { throw(std::logic_error("Index is out of range")); } //throw error
+    { throw(std::range_error("Index is out of range")); } //throw error
 
   if (itemCount == 0)
-    { throw(std::logic_error("List is empty")); } //throw error
+    { throw(std::range_error("List is empty")); } //throw error
 
   else
   {
@@ -159,10 +159,10 @@ template <typename T>
 void LinkedList<T>::setEntry(std::size_t position, const T& newValue)
 {
   if (position < 0 || position >= itemCount)
-    { throw(std::logic_error("Index is out of range of list")); } //throw error
+    { throw(std::range_error("Index is out of range of list")); } //throw error
 
   if (itemCount == 0)
-    { throw(std::logic_error("List is empty")); } //throw error
+    { throw(std::range_error("List is empty")); } //throw error
 
   Node<T>* curNode = headPtr;
   for (size_t i = 0; i < position; i++)
