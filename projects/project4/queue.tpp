@@ -2,30 +2,23 @@
 
 template <typename T, typename L>
 void Queue<T,L>::enqueue(const T& item)
-{
-  if (internal_list.isEmpty()) // if list is empty, we can just insert
-    { internal_list.insert(item); }
-
-  
+{ 
+  internal_list.insert(internal_list.getLength(), item);
+  return;
 }
 
 template <typename T, typename L>
 void Queue<T,L>::dequeue()
 {
-  // TODO
+   internal_list.remove(0);
+   return;
 }
 
 template <typename T, typename L>
 T Queue<T,L>::peekFront()
-{
-  // TODO
-  return T();
-}
+{ return internal_list.getEntry(0); }
 
 template <typename T, typename L>
 bool Queue<T,L>::isEmpty() const
-{
-  // TODO
-  return false;
-}
+{ return internal_list.isEmpty(); }
 
