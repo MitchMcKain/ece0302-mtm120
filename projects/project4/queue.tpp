@@ -3,7 +3,10 @@
 template <typename T, typename L>
 void Queue<T,L>::enqueue(const T& item)
 {
-  // TODO
+  if (internal_list.isEmpty()) // if list is empty, we can just insert
+    { internal_list.insert(item); }
+
+  
 }
 
 template <typename T, typename L>
