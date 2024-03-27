@@ -46,7 +46,8 @@ public:
 
 private:
 
-  //TODO
+  std::size_t itemCount;
+  Node<T>* headPtr = nullptr;
   
 };
 
