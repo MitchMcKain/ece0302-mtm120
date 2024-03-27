@@ -5,6 +5,27 @@
 #include "list.hpp"
 #include "queue.hpp"
 
+TEST_CASE("Testing enqueue with a previously empty queue", "[queue]")
+{
+  Queue<int, List<int>> q;
+  REQUIRE(q.isEmpty());
+
+  q.enqueue(0);
+  REQUIRE_FALSE(q.isEmpty());
+  REQUIRE(q.peekFront() == 0);
+}
+
+TEST_CASE("Testing enqueue to ensure items are added to back", "[queue]")
+{
+  Queue<int, List<int>> q;
+
+  q.enqueue(0);
+  q.enqueue(1);
+  REQUIRE(q.peekFront() == 0);
+}
+
+//add cases for error throwing
+
 TEST_CASE("Testing all", "[queue]") {
   Queue<int, List<int>> queue;
 
