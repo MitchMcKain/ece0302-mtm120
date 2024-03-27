@@ -27,30 +27,26 @@ SortedList<T, L>::~SortedList()
 
 template <typename T, typename L>
 bool SortedList<T, L>::isEmpty() const noexcept
-{
-  return plist.isEmpty();
-}
+{ return plist.isEmpty(); }
 
 template <typename T, typename L>
 std::size_t SortedList<T, L>::getLength() const noexcept
-{
-  return plist.getLength();
-}
+{ return plist.getLength(); }
 
 template <typename T, typename L>
 void SortedList<T, L>::insert(const T& item)
 {
-  if (List<T>::getLength() == 0) //list is empty, so insert at beginning
+  if (plist.getLength() == 0) //list is empty, so insert at beginning
 		{ 
-			List<T>::insert(0, item);
+			plist.insert(0, item);
 			return;
 		}
 
 	int i = 0;
-	while(i < List<T>::getLength() && item > List<T>::getEntry(i))
+	while(i < plist.getLength() && item > plist.getEntry(i))
 		{ i++; }
 	
-	List<T>::insert(i, item);
+	plist.insert(i, item);
 	return;
 }
 
@@ -60,37 +56,31 @@ void SortedList<T, L>::remove(const T& item)
   if(isEmpty()) throw std::range_error("empty list in remove");
   
   int i = 0;
-  while(i < List<T>::getLength() && item != List<T>::getEntry(i))
+  while(i < plist.getLength() && item != plist.getEntry(i))
 	  { i++; }
-	List<T>::remove(i);
+	plist.remove(i);
 
 	return;
 }
 
 template <typename T, typename L>
 void SortedList<T, L>::removeAt(std::size_t position)
-{
-  plist.remove(position);
-}
+{ plist.remove(position); }
 
 template <typename T, typename L>
 void SortedList<T, L>::clear()
-{
-  plist.clear();
-}
+{ plist.clear(); }
 
 template <typename T, typename L>
 T SortedList<T, L>::getEntry(std::size_t position) const
-{
-  return plist.getEntry(position);
-}
+{ return plist.getEntry(position); }
 
 template <typename T, typename L>
 long int SortedList<T, L>::getPosition(const T& newValue)
 {
-  for (int i = 0; i < List<T>::getLength(); i++)
+  for (int i = 0; i < plist.getLength(); i++)
 		{
-			if (item == List<T>::getEntry(i))
+			if (newValue == plist.getEntry(i))
 				{ return i; } //item appears in list at index i
 		}
 	
