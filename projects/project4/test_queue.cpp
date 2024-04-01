@@ -24,7 +24,17 @@ TEST_CASE("Testing enqueue to ensure items are added to back", "[queue]")
   REQUIRE(q.peekFront() == 0);
 }
 
-//add cases for error throwing
+TEST_CASE("Testing if error gets thrown for remove", "[queue]")
+{
+  Queue<int, List<int>> q;
+  REQUIRE_THROWS(q.dequeue());
+}
+
+TEST_CASE("Testing if error gets thrown for peekFront", "[queue]")
+{
+  Queue<int, List<int>> q;
+  REQUIRE_THROWS(q.peekFront());
+}
 
 TEST_CASE("Testing all", "[queue]") {
   Queue<int, List<int>> queue;
