@@ -8,10 +8,21 @@
 //******************************************
 //***********Function Prototypes************
 //******************************************
+
+//intial locates and returns the coordinate of the red pixel
 std::vector<int> initial(Image<Pixel>);
-bool goal(std::vector<int>, Image<Pixel>);
+
+// see if we are at the solution
+bool goal(std::vector<int>, Image<Pixel> &);
+
+//actions returns a list of all the possible next moves given a specific coordinate
 List< std::vector<int> > actions(std::vector<int>, Image<Pixel> &);
-std::vector<int> breadthFirstSearch(Image<Pixel>);
+
+//breadthFirstSearch attempts to find the exit to the maze
+void breadthFirstSearch(Image<Pixel> &);
+
+//pixelErrors checks if the image has proper requirements to BFS
+void pixelErrors(Image<Pixel> &);
 
 
 
@@ -34,13 +45,14 @@ int main(int argc, char *argv[])
   // Read input image from file
   Image<Pixel> image = readFromFile(input_file);
 
-  std::vector<int> soln = breadthFirstSearch(image);
+  pixelErrors(image);
 
-  image(soln[0], soln[1]) = GREEN;
+  breadthFirstSearch(image);
 
   // Write solution image to file
   writeToFile(image, output_file);
   
+  exit(EXIT_SUCCESS);
 }
 
 
@@ -67,9 +79,9 @@ std::vector<int> initial(Image<Pixel> maze)
   return failedStartCoordinate;
 }
 
-bool goal(std::vector<int> s, Image<Pixel> maze) // see if we are at end
+bool goal(std::vector<int> s, Image<Pixel>& maze)
 {
-  if ((s[0] == 0 || s[1] == 0) && maze(s[0], s[1]) == WHITE)
+  if (((s[0] == 0) || (s[1] == 0) || (s[0] == maze.width() - 1) || (s[1] == maze.height() - 1)) && maze(s[0], s[1]) == WHITE)
     { return true; }
   else
     { return false; }
@@ -80,41 +92,61 @@ List< std::vector<int> > actions(std::vector<int> s, Image<Pixel>& maze)
   List< std::vector<int> > states;
 
   //check if we can move down
-  if (maze(s[0] - 1, s[1]) == WHITE)
+  if ((s[0] - 1) == -1) //we are at the bottom border
+    {}
+  else if (maze(s[0] - 1, s[1]) == WHITE)
     { 
       std::vector<int> down{s[0] - 1, s[1]};
       states.insert(states.getLength(), down); 
     }
+  else
+    {}
 
   //check if we can move up
-  if (maze(s[0] + 1, s[1]) == WHITE)
+  if ((s[0] + 1) == maze.height()) //we are at the top border
+    {}
+  else if (maze(s[0] + 1, s[1]) == WHITE)
     {
       std::vector<int> up{s[0] + 1, s[1]};
       states.insert(states.getLength(), up);
     }
+  else
+    {}
 
   //check if we can move left
-  if (maze(s[0], s[1] - 1) == WHITE)
+  if ((s[1] - 1) == - 1) //we are at the left border
+    {}
+  else if (maze(s[0], s[1] - 1) == WHITE)
     {
       std::vector<int> left{s[0], s[1] - 1};
       states.insert(states.getLength(), left);
     }
+  else
+    {}
 
   //check if we can move right
-  if (maze(s[0], s[1] + 1) == WHITE)
+  if((s[1] + 1) == maze.height())// we are at the right border
+    {}
+  else if (maze(s[0], s[1] + 1) == WHITE)
     {
       std::vector<int> right{s[0], s[1] + 1};
       states.insert(states.getLength(), right);
     }
+    else
+    {}
 
   return states;
 }
 
-std::vector<int> breadthFirstSearch(Image<Pixel> problem)
+void breadthFirstSearch(Image<Pixel> &problem)
 {
   std::vector<int> s = initial(problem);
   if (goal(s, problem))
-    { return s; } //the start is the exit
+    { 
+      std::cout << "Solution Found" << std::endl;
+      problem(s[0], s[1]) = GREEN; //the initial state is the exit
+      return;
+    }
 
   List< std::vector<int> > initialMoves = actions(s, problem);
   Queue< std::vector<int>, List< std::vector<int> > > frontier;
@@ -127,22 +159,66 @@ std::vector<int> breadthFirstSearch(Image<Pixel> problem)
   while (1)
   {
     if (frontier.isEmpty())
-      { exit(EXIT_FAILURE); }
+      { 
+        std::cout << "No Solution Found" << std::endl;
+        return; //there is no solution to the maze
+      }
 
     s = frontier.peekFront();
     frontier.dequeue();
-      
+          
     if(goal(s, problem))
-      { return s; } //we have found the exit
-
-    explored[s[0]][s[1]] = true; //we have explored this pixel
+      { 
+        std::cout << "Solution Found" << std::endl;
+        problem(s[0], s[1]) = GREEN;
+        return; //we have found the exit
+      }
 
     List< std::vector<int> > newActions = actions(s, problem);
     for (int i = 0; i < newActions.getLength(); i++)
       {
         if (explored[newActions.getEntry(i)[0]][newActions.getEntry(i)[1]] == false)
-          { frontier.enqueue(newActions.getEntry(i)); }
+          { 
+            frontier.enqueue(newActions.getEntry(i));
+            explored[newActions.getEntry(i)[0]][newActions.getEntry(i)[1]] = true; //we have explored this pixel
+          }
       }
+
+    newActions.clear();
+
   }
 
+}
+
+//pixelErrors checks if the image has proper requirements to BFS
+void pixelErrors(Image<Pixel> &maze)
+{
+  int rows = maze.width();
+  int cols = maze.height();
+  int red = 0;
+  int blue = 0;
+  int green = 0;
+  for (int i = 0; i < rows; i++)
+    {
+      for (int j = 0; j < cols; j++)
+        {
+          if (maze(i, j) == RED)
+            { red++; }
+          if (maze(i, j) == BLUE)
+            { blue++; }
+          if (maze(i, j) == GREEN)
+            { green++; }
+        }
+    }
+  
+  if (red > 1)
+    {
+      std::cout << "Error: There is more than one starting location" << std::endl;
+      exit(EXIT_FAILURE);
+    }
+  if (blue > 0 || green > 0)
+    {
+      std::cout << "Error: The maze contains a color other than black, white, or red" << std::endl;
+      exit(EXIT_FAILURE);
+    }
 }
