@@ -42,6 +42,17 @@ int main(int argc, char *argv[])
   std::string input_file = argv[1];
   std::string output_file = argv[2];
 
+  //Catch if error will be thrown when readFromFile would be called
+  try
+  {
+    readFromFile(input_file);
+  }
+  catch (const std::exception& e)
+  {
+    std::cerr << "Error: the program cannot read the specified image file" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
   // Read input image from file
   Image<Pixel> image = readFromFile(input_file);
 
@@ -49,8 +60,18 @@ int main(int argc, char *argv[])
 
   breadthFirstSearch(image);
 
+//Catch if error will be thrown when writeToFile would be called
+ try
+  {
+    writeToFile(image, output_file);
+  }
+  catch(const std::exception& e)
+  {
+    std::cerr << "Error: the program cannot write to the specified file" << std::endl;
+    exit(EXIT_FAILURE);
+  }
   // Write solution image to file
-  writeToFile(image, output_file);
+  writeToFile(image, output_file);  
   
   exit(EXIT_SUCCESS);
 }
@@ -213,12 +234,12 @@ void pixelErrors(Image<Pixel> &maze)
   
   if (red > 1)
     {
-      std::cout << "Error: There is more than one starting location" << std::endl;
+      std::cerr << "Error: There is more than one starting location" << std::endl;
       exit(EXIT_FAILURE);
     }
   if (blue > 0 || green > 0)
     {
-      std::cout << "Error: The maze contains a color other than black, white, or red" << std::endl;
+      std::cerr << "Error: The maze contains a color other than black, white, or red" << std::endl;
       exit(EXIT_FAILURE);
     }
 }
