@@ -96,3 +96,42 @@ TEST_CASE("Test Copy Assign", "[copy assign]") {
     
 }
 
+TEST_CASE("Test removing an item that has a right child", "[remove]")
+{
+    TreeType tree;
+
+    tree.insert(10, 10);
+    tree.insert(15, 15);
+    tree.insert(16, 16);
+
+    int item;
+    REQUIRE(tree.remove(15));
+    REQUIRE(!tree.retrieve(15, item));
+}
+
+TEST_CASE("Test removing an item that has a left child", "[remove]")
+{
+    TreeType tree;
+
+    tree.insert(10, 10);
+    tree.insert(6, 6);
+    tree.insert(2, 2);
+
+    int item;
+    REQUIRE(tree.remove(6));
+    REQUIRE(!tree.retrieve(6, item));
+}
+
+TEST_CASE("Test removing an item that has two children", "[remove]")
+{
+    TreeType tree;
+
+    tree.insert(10, 10);
+    tree.insert(2, 2);
+    tree.insert(1, 1);
+    tree.insert(3, 3);
+
+    int item;
+    REQUIRE(tree.remove(2));
+    REQUIRE(!tree.retrieve(2, item));
+}

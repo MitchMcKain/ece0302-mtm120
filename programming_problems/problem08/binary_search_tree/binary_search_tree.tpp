@@ -95,8 +95,40 @@ template <typename KeyType, typename ItemType>
 bool BinarySearchTree<KeyType, ItemType>::insert(
     const KeyType& key, const ItemType& item)
 {
-    // TODO 
-    return false;
+    //create a node with key and new item
+    Node<KeyType, ItemType>* itemNode = new Node<KeyType, ItemType>;
+    itemNode->key = key;
+    itemNode->data = item;
+    Node<KeyType, ItemType>* curNode;
+    Node<KeyType, ItemType>* parNode;
+
+    //check for an empty tree
+    if (isEmpty())
+        { 
+            root = itemNode;
+            return true; 
+        }
+    //if not empty, find correct spot and insert
+    else
+        {
+            search(key, curNode, parNode);
+            
+            if (key < curNode->key)
+                {
+                    curNode->left = itemNode;
+                    return true;
+                }
+            else if (key > curNode->key)
+                {
+                    curNode->right = itemNode;
+                    return true;
+                }
+            else
+                {
+                    delete itemNode;
+                    return false;
+                }
+        }
 }
 
 template <typename KeyType, typename ItemType>
@@ -130,20 +162,66 @@ bool BinarySearchTree<KeyType, ItemType>::remove(KeyType key)
     if (isEmpty())
         return false; // empty tree
 
-    // TODO
-
+    //search for key
+    Node<KeyType, ItemType>* curNode;
+    Node<KeyType, ItemType>* parNode;
+    search(key, curNode, parNode);
 
     // case one thing in the tree
+    if (curNode == root && curNode->left == nullptr && curNode->right == nullptr)
+        {
+            root = nullptr;
+            return true;
+        }
 
     // case, found deleted item at leaf
+    else if (curNode->left == nullptr && curNode->right == nullptr)
+        {
+            if (curNode == parNode->left) //removing the left leaf
+                {
+                    parNode->left = nullptr;
+                    curNode = 0;
+                    return true;
+                }
+            if (curNode == parNode->right) //removing the right leaf
+                {
+                    parNode->right = nullptr;
+                    curNode = 0;
+                    return true;
+                }
+        }
 
     // case, item to delete has only a right child
+    else if (curNode->left == nullptr && curNode->right != nullptr)
+        {
+            curNode->data = curNode->right->data;
+            curNode->key = curNode->right->key;
+            curNode->right = 0;
+            return true;
+        }
 
     // case, item to delete has only a left child
+    else if (curNode->left != nullptr && curNode->right == nullptr)
+        {
+            curNode->data = curNode->left->data;
+            curNode->key = curNode->left->key;
+            curNode->left = 0;
+            return true;
+        }
 
     // case, item to delete has two children
+    else 
+        {
+            Node<KeyType, ItemType>* newNode = new Node<KeyType, ItemType>;
+            Node<KeyType, ItemType>* oldcurNode = curNode;
+            inorder(curNode, newNode, parNode);
+            oldcurNode->data = newNode->data;
+            oldcurNode->key = newNode->key;
+            delete newNode;
+            return true;
+        } 
 
-    return false; 
+    return false;
 }
 
 template <typename KeyType, typename ItemType>
@@ -151,7 +229,17 @@ void BinarySearchTree<KeyType, ItemType>::inorder(Node<KeyType, ItemType>* curr,
     Node<KeyType, ItemType>*& in, Node<KeyType, ItemType>*& parent)
 {
     // TODO: find inorder successor of "curr" and assign to "in"
-
+    curr = curr->right;
+    while(curr->left != nullptr)
+        {
+            parent = curr;
+            curr = curr->left;
+        }
+    parent->data = parent->data;
+    parent->key = parent->key;
+    in->data = curr->data;
+    in->key = curr->key;
+    curr = 0;
 }
 
 template <typename KeyType, typename ItemType>
