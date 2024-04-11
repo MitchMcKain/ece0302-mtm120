@@ -135,3 +135,14 @@ TEST_CASE("Test removing an item that has two children", "[remove]")
     REQUIRE(tree.remove(2));
     REQUIRE(!tree.retrieve(2, item));
 }
+
+TEST_CASE("Test TreeSort", "[treeSort]")
+{
+    int arr[10] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+
+    TreeType tree;
+    tree.treeSort(arr, 10);
+
+    int solution[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    REQUIRE(solution == arr);
+}

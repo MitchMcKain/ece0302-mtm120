@@ -273,9 +273,42 @@ void BinarySearchTree<KeyType, ItemType>::search(KeyType key,
 
 template<typename KeyType, typename ItemType>
 void BinarySearchTree<KeyType, ItemType>::treeSort(KeyType arr[], int size) {
-    // TODO: check for duplicate items in the input array
-
+    // TODO: check for duplicate items in the input array  
+    KeyType value;
+    for (int i = 0; i < size; i++)
+        {
+           value = arr[i];
+            for (int j = 0; j < size; j++)
+                {
+                    if (value == arr[j])
+                        {
+                            exit(EXIT_FAILURE);
+                        }
+                }
+        }
     // TODO: use the tree to sort the array items
+    for (int i = 0; i < size; i++)
+        { insert(arr[i], 1); }
+
+    Node<KeyType, ItemType>* curNode = root;
+    Node<KeyType, ItemType>* parNode;
+
+    KeyType newarr[size];
+    int currentSize = 0;
+    while (root != nullptr)
+        {
+            while(curNode->left != nullptr)
+                {
+                    curNode = curNode->left;
+                }
+            newarr[currentSize] = curNode->key;
+            remove(curNode->key);
+            currentSize++;
+        }
 
     // TODO: overwrite input array values with sorted values
+    for (int i = 0; i < size; i++)
+        { arr[i] = newarr[i]; }
+
+    return;
 }
