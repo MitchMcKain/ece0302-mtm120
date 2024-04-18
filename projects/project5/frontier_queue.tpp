@@ -23,11 +23,12 @@ void frontier_queue<T>::push(const T &p, std::size_t cost, std::size_t heur) {
 }
 
 template <typename T>
-bool frontier_queue<T>::empty() {
-
-  //TODO
-
-  return true;
+bool frontier_queue<T>::empty() 
+{
+  if (queue.empty())
+    { return true; }
+  else
+    { return false; }
 }
 
 template <typename T> 
