@@ -17,20 +17,9 @@ TEST_CASE("Test if push does anything", "[frontier_queue]")
     REQUIRE_FALSE(q.empty());
 }
 
-TEST_CASE("Test if bubbling works in push", "[frontier_queue]")
-{
-    frontier_queue<int> q;
-    q.push(2,2,2);
-    q.push(1,1,1);
-    State<int> popState = q.pop();
-    REQUIRE(popState.getValue() == 1);
-    REQUIRE(popState.getPathCost() == 1);
-    REQUIRE(popState.getFCost() == 2);
-}
-
 //End My Tests//
 
-/*
+
 TEST_CASE("Simple push test", "[frontier_queue]")
 {
     frontier_queue<int> fq;
@@ -142,4 +131,3 @@ TEST_CASE("Thorough replaceif test", "[frontier_queue]")
     REQUIRE(state.getFCost() == 3);
     REQUIRE(state.getPathCost() == 1);
 }
-*/
