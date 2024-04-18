@@ -17,8 +17,26 @@ TEST_CASE("Test if push does anything", "[frontier_queue]")
     REQUIRE_FALSE(q.empty());
 }
 
-//End My Tests//
+TEST_CASE("Test pop", "[frontier_queue]")
+{
+    frontier_queue<int> q;
+    q.push(1,1,1);
+    State<int> test = q.pop();
+    REQUIRE(test.getFCost() == 2);
+    REQUIRE(test.getPathCost() == 1);
+    REQUIRE(test.getValue() == 1);
+}
 
+TEST_CASE("Test replaceif", "[frontier_queue]")
+{
+    frontier_queue<int> q;
+    q.push(1,5,1);
+    q.replaceif(1,1);
+    State<int> test = q.pop();
+    REQUIRE(test.getPathCost() == 1);
+}
+
+//End My Tests//
 
 TEST_CASE("Simple push test", "[frontier_queue]")
 {

@@ -12,48 +12,30 @@ State<T> frontier_queue<T>::pop()
   queue.front() = queue.back();
   queue.pop_back();
 
-  //heapify
-  if (queue.size() == 0 || queue.size() == 1) //no children
+  // Heapify
+    int curNode = 0;
+    int queueSize = queue.size();
+    while (true) 
     {
-      return root;
-    }
-  else if (queue.size() == 2) //only left child
-    {
-      if (queue[0].getFCost() > queue[1].getFCost())
-        {
-          std::swap(queue[0], queue[1]);
-          return root;
-        }
-      else 
-        { return root; }
-    }
-  else //left child and right child
-    {
-      int curNode = 0;
-      int leftChild = 2*curNode + 1;
-      int rightChild = 2*curNode + 2;
-      while((queue[curNode].getFCost() > queue[leftChild].getFCost()) || (queue[curNode].getFCost() > queue[rightChild].getFCost()))
-        {
-            if ((queue[curNode]).getFCost() > (queue[leftChild]).getFCost()) 
-              {
-                //swap parent with left child
-                std::swap(queue[leftChild], queue[curNode]);
-                curNode = leftChild;
-                leftChild = 2*curNode + 1;
-                rightChild = 2*curNode + 2;
-              }
-            else
-              {
-                //swap parent with right child
-                std::swap(queue[rightChild], queue[curNode]);
-                curNode = rightChild;
-                leftChild = 2*curNode + 1;
-                rightChild = 2*curNode + 2;
-              }
-        }
+        int leftChild = 2 * curNode + 1;
+        int rightChild = 2 * curNode + 2;
+        int smallest = curNode;
 
-      return root;
+        if (leftChild < queueSize && queue[leftChild].getFCost() < queue[smallest].getFCost()) 
+          { smallest = leftChild; }
+        if (rightChild < queueSize && queue[rightChild].getFCost() < queue[smallest].getFCost())
+          { smallest = rightChild; }
+
+        if (smallest != curNode) 
+          {
+            std::swap(queue[curNode], queue[smallest]);
+            curNode = smallest;
+          } 
+        else 
+        { break; }
     }
+
+    return root;
 }
 
 template <typename T>
@@ -114,8 +96,11 @@ void frontier_queue<T>::replaceif(const T &p, std::size_t cost)
     {
       if (queue[i].getValue() == p)
         { 
-          queue[i].updatePathCost(cost);
-          updates++;
+          if (queue[i].getPathCost() > cost)
+          {
+            queue[i].updatePathCost(cost);
+            updates++;
+          }
         }
     }
 
@@ -123,44 +108,30 @@ void frontier_queue<T>::replaceif(const T &p, std::size_t cost)
     { return; }
   else
   {
-    //heapify
-    if (queue.size() == 0 || queue.size() == 1) //no children
-      { return; }
-    else if (queue.size() == 2) //only left child
-      {
-        if (queue[0].getFCost() > queue[1].getFCost())
-          {
-            std::swap(queue[0], queue[1]);
-            return;
+    // Heapify
+    int curNode = 0;
+    int queueSize = queue.size();
+    while (true) 
+    {
+        int leftChild = 2 * curNode + 1;
+        int rightChild = 2 * curNode + 2;
+        int smallest = curNode;
+
+        if (leftChild < queueSize && queue[leftChild].getFCost() < queue[smallest].getFCost()) 
+          { smallest = leftChild; }
+        if (rightChild < queueSize && queue[rightChild].getFCost() < queue[smallest].getFCost()) 
+          { smallest = rightChild; }
+
+        if (smallest != curNode)
+          { 
+            std::swap(queue[curNode], queue[smallest]);
+            curNode = smallest;
           }
         else 
-          { return; }
-      }
-    else //left child and right child
-      {
-        int curNode = 0;
-        int leftChild = 2*curNode + 1;
-        int rightChild = 2*curNode + 2;
-        while((queue[curNode].getFCost() > queue[leftChild].getFCost()) || (queue[curNode].getFCost() > queue[rightChild].getFCost()))
-          {
-              if ((queue[curNode]).getFCost() > (queue[leftChild]).getFCost()) 
-                {
-                  //swap parent with left child
-                  std::swap(queue[leftChild], queue[curNode]);
-                  curNode = leftChild;
-                  leftChild = 2*curNode + 1;
-                  rightChild = 2*curNode + 2;
-                }
-              else
-                {
-                  //swap parent with right child
-                  std::swap(queue[rightChild], queue[curNode]);
-                  curNode = rightChild;
-                  leftChild = 2*curNode + 1;
-                  rightChild = 2*curNode + 2;
-                }
-          }
-      }
+          { break; }
+    }
+
+    return;
   }
 
 }
