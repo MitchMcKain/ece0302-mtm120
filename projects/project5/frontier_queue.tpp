@@ -42,20 +42,19 @@ template <typename T>
 void frontier_queue<T>::push(const T &p, std::size_t cost, std::size_t heur) 
 {
   //create a new state
-  State<T> newState(p, cost, heur);
+  State<T> newState = State<T>(p, cost, heur);
 
   //insert newState to next empty spot on min heap
   queue.push_back(newState);
-  if (queue.size() == 1)
-    { return; }
 
   //get indices for swapping purposes
   int parent = (queue.size() - 1) / 2;
-  int state = queue.size();
+  int state = queue.size() - 1;
 
   //exchange with parent node and keep bubbling up if necessary
   while (((queue.front()).getFCost() != queue[state].getFCost()) && ((queue[parent]).getFCost() > (queue[state]).getFCost()))
     {
+
       //swap newState with its parent to bubble up
       std::swap(queue[parent], queue[state]);
       state = parent;
